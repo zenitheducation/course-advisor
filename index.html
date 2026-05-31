@@ -716,33 +716,185 @@ async function doMore(){
 }
 
 // ── TEXT INPUT ────────────────────────────────────────
+// ════════════════ TEXT INPUT (restored) ════════════════
 async function sendMsg(){
   const inp=document.getElementById("inp");
   const txt=(inp.value||"").trim();
   if(!txt) return;
   inp.value="";
   addMsg("user",txt);
-  if(phase==="lang"){
-    if(/hin|हिं|हि|हिन/i.test(txt)) await setLang("hi");
-    else await setLang("en");
-    return;
-  }
+  if(phase==="lang"){ if(/hin|हिं|हि|हिन/i.test(txt)) await setLang("hi"); else await setLang("en"); return; }
   if(phase==="name"){ rmOpts(); await gotName(txt); return; }
   if(phase==="subject"){ rmOpts(); await gotSubject(txt); return; }
-  await say(L==="hi"
-    ?"कृपया ऊपर दिए गए बटनों में से चुनें 👆 — या किसी भी समय हमसे संपर्क करें।"
-    :"Please tap one of the option buttons above 👆 — or reach us any time.",500);
+  await say(L==="hi"?"कृपया ऊपर दिए गए बटनों में से चुनें 👆 — या किसी भी समय हमसे संपर्क करें।":"Please tap one of the option buttons above 👆 — or reach us any time.",500);
 }
-
 function doRestart(){
   const b=document.getElementById("body");
   b.innerHTML='<div class="dd">Today</div>';
   A.name="";A.exam="";A.subject="";A.medium="";A.product="";
   phase="lang";
   document.getElementById("stpbar").style.display="none";
-  const inp=document.getElementById("inp");
-  if(inp) inp.value="";
+  const inp=document.getElementById("inp"); if(inp) inp.value="";
   startLang();
+}
+
+// ════════════════ LIVE CATALOG ENGINE (overrides) ════════════════
+const ORG={online:10248,notes:297525};
+const APIBASE="https://api.classplusapp.com/v2/course/preview/similar/";
+let _cat={};
+function _tok(org){return btoa(JSON.stringify({tutorId:null,orgId:org,categoryId:null}));}
+async function fetchApp(key){
+  if(_cat[key]) return _cat[key];
+  try{const raw=localStorage.getItem("zcat_"+key);if(raw){const o=JSON.parse(raw);if(Date.now()-o.t<1800000&&o.d&&o.d.length){_cat[key]=o.d;return o.d;}}}catch(e){}
+  const url=APIBASE+_tok(ORG[key])+"?limit=400&offset=0";
+  const r=await fetch(url,{headers:{accept:'application/json'}});
+  const j=await r.json();
+  const d=(j&&j.data&&j.data.coursesData)||[];
+  if(d.length){_cat[key]=d; try{localStorage.setItem("zcat_"+key,JSON.stringify({t:Date.now(),d}));}catch(e){}}
+  return d;
+}
+async function getCatalogs(apps){const out=[];for(const a of apps){try{const d=await fetchApp(a);d.forEach(c=>out.push(Object.assign({_app:a},c)));}catch(e){}}return out;}
+
+const EXKW={
+  ap:["ASSISTANT PROFESSOR"],
+  pgt:["PGT","TGT"," TET"," PRT","KVS","NVS","EMRS"],
+  rpsc1:["1ST GRADE","FIRST GRADE","SCHOOL LECTURER"],
+  rpsc2:["2ND GRADE","SENIOR TEACHER"],
+  net:["UGC NET","NET JRF","NET/JRF","CSIR","NTA-UGC"," SET "," SLET"],
+  ras:["RAS ","RAS-","RAS+","RAS,","RAS(","RAS PRE","RAS MAIN","RAS PRELIM","RAJASTHAN EXAM","STATE PCS"],
+  rssb:["RSSB","JVVNL","JUNIOR ACCOUNTANT"," CET","CET ","P.S.I","PSI","COMPUTER INSTRUCTOR","PATWAR"]
+};
+const PRODKW={
+  enotes:["E-BOOK","E BOOK","E-NOTES","E NOTES","CLASS NOTES","E NOTE","DIGITAL"],
+  hardcopy:["HARD COPY"],
+  tests:["TEST SERIES"]
+};
+function txtOf(c){return ((c.name||"")+" || "+(c.categories||"")).toUpperCase();}
+function matchExam(c,exam){const T=txtOf(c);return (EXKW[exam]||[]).some(k=>T.includes(k));}
+function subjKey(subject){
+  if(!subject) return "";
+  let s=subject.split("/")[0];
+  s=s.replace(/—.*/,"").replace(/\(.*?\)/g,"").trim();
+  return s.toUpperCase();
+}
+function priceLine(c){
+  if(c.isFreeCourse||c.finalPrice===0) return '<span class="disc">FREE</span>';
+  const f=(c.finalPrice!=null?c.finalPrice:c.price);
+  const orig=c.price;
+  if(orig&&orig>f){
+    const pct=c.discountPercentage?(' <span class="disc">'+c.discountPercentage+'% OFF</span>'):'';
+    return '<span class="pr">₹'+f+'</span> <span class="op">₹'+orig+'</span>'+pct;
+  }
+  return '<span class="pr">₹'+f+'</span>';
+}
+function medScore(c,medium){
+  const T=(c.name||"").toUpperCase();
+  if(medium==="Hindi") return T.includes("HINDI")?2:(T.includes("BOTH")?1:0);
+  if(medium==="English") return T.includes("ENGLISH")?2:(T.includes("BOTH")?1:0);
+  return T.includes("BOTH")?1:0;
+}
+function matchCourses(pool,exam,subject,prod,medium){
+  let cand=pool.filter(c=>matchExam(c,exam));
+  const pk=PRODKW[prod];
+  if(pk) cand=cand.filter(c=>pk.some(k=>txtOf(c).includes(k)));
+  // de-dupe by id
+  const seen={}; cand=cand.filter(c=>{if(seen[c.id])return false;seen[c.id]=1;return true;});
+  const key=subjKey(subject);
+  let hits = key? cand.filter(c=>txtOf(c).includes(key)) : cand;
+  let exact=true;
+  if(key && hits.length===0){ hits=cand; exact=false; }
+  hits.sort((a,b)=>{
+    const m=medScore(b,medium)-medScore(a,medium); if(m) return m;
+    const fa=a.finalPrice!=null?a.finalPrice:a.price, fb=b.finalPrice!=null?b.finalPrice:b.price;
+    return fa-fb;
+  });
+  return {list:hits.slice(0,6), exact, total:hits.length};
+}
+function courseCard(c){
+  return '<div class="row" style="padding:8px 0;border-bottom:1px solid #eee">'
+    +'<div style="font-weight:600;color:#075e54;margin-bottom:3px;line-height:1.35">'+(c.name||"Course")+'</div>'
+    +'<div style="margin-bottom:6px">'+priceLine(c)+'</div>'
+    +'<a class="cta ca1" style="padding:7px 12px;font-size:12px" href="'+c.shareableLink+'" target="_blank" rel="noopener">'
+    +(L==="hi"?"यह खोलें / खरीदें →":"Open / Buy this →")+'</a></div>';
+}
+function appsForProd(prod){
+  if(prod==="online"||prod==="combo") return ["online"];
+  if(prod==="enotes"||prod==="hardcopy") return ["notes"];
+  return ["online","notes"]; // tests, help
+}
+function browseBubble(apps,waMsg){
+  let h='<div class="ctawrap">';
+  h+='<a class="cta cwa" href="'+waURL(waMsg)+'" target="_blank" rel="noopener">'+t("waOrder")+'</a>';
+  if(apps.indexOf("online")>=0) h+='<a class="cta ca1" href="'+ONLINE_URL+'/courses" target="_blank" rel="noopener">'+(L==="hi"?"🎥 सभी ऑनलाइन कोर्स देखें":"🎥 Browse ALL Online Courses")+'</a>';
+  if(apps.indexOf("notes")>=0) h+='<a class="cta ca2" href="'+NOTES_URL+'/courses" target="_blank" rel="noopener">'+(L==="hi"?"📗 सभी नोट्स/बुक्स देखें":"📗 Browse ALL Notes & Books")+'</a>';
+  h+='<a class="cta csm" href="'+SAMPLE+'" target="_blank" rel="noopener">'+t("viewSamp")+'</a>';
+  h+='</div>';
+  return h;
+}
+
+// Override Q5 so Online + Combo are always offered (live engine handles availability)
+async function askQ5(){
+  phase="product";setStep(5);
+  await say(t("q5"),600);
+  addOpts([
+    {l:t("p1"),full:true,a:()=>doSuggest("online")},
+    {l:t("p2"),full:true,a:()=>doSuggest("enotes")},
+    {l:t("p3"),full:true,a:()=>doSuggest("hardcopy")},
+    {l:t("p4"),full:true,a:()=>doSuggest("tests")},
+    {l:t("p5"),full:true,a:()=>doSuggest("combo")},
+    {l:t("pX"),full:true,a:()=>doSuggest("help")},
+  ]);
+}
+
+// Override doSuggest: live exact-course matching with real prices + direct links
+async function doSuggest(prod){
+  A.product=prod;
+  const {name,exam,subject,medium}=A;
+  const examLabel=((L==="hi"?EXAMS_HI:EXAMS_EN).find(e=>e.id===exam)||{}).l||exam;
+  const examClean=examLabel.replace(/[🏛️📚🏫🎓💻]/g,"").trim();
+  const medStr={Hindi:L==="hi"?"हिंदी माध्यम":"Hindi Medium",English:L==="hi"?"अंग्रेजी माध्यम":"English Medium",Both:L==="hi"?"दोनों माध्यम":"Both Mediums"}[medium]||medium;
+  const subjShort=(subject||"").split("/")[0].trim();
+  const waMsg=(L==="hi"
+    ?"नमस्ते ज़ेनिथ! मेरा नाम "+name+" है। मैं "+examClean+" — "+subject+" ("+medStr+") की तैयारी कर रहा/रही हूं।"
+    :"Hi Zenith! My name is "+name+". Preparing for "+examClean+" — "+subject+" ("+medStr+").");
+  const header=(L==="hi"
+    ?"<strong>"+name+"</strong> जी, आपके लिए: <span class=\"badge\">"+subjShort+"</span><span class=\"badge\">"+medStr+"</span>"
+    :"<strong>For "+name+":</strong> <span class=\"badge\">"+subjShort+"</span><span class=\"badge\">"+medStr+"</span>");
+  await say(header,500);
+  await say(L==="hi"?"मैं हमारे ऐप से आपके लिए सही कोर्स खोज रहा हूं… 🔎":"Finding the exact matches from our live catalogue… 🔎",700);
+
+  const apps=appsForProd(prod);
+  let cat=[];
+  try{ cat=await getCatalogs(apps); }catch(e){ cat=[]; }
+
+  if(!cat.length){
+    await say(L==="hi"
+      ?"अभी लाइव सूची लोड नहीं हो पाई। कृपया नीचे दिए लिंक से सीधे ऐप देखें या WhatsApp करें — हम तुरंत सही कोर्स भेज देंगे। 🙏"
+      :"Couldn't load the live list right now. Please use the links below to open the app directly, or WhatsApp us — we'll send the exact course in minutes. 🙏",700);
+    addCTA(browseBubble(apps,waMsg));
+    setTimeout(doMore,500); return;
+  }
+
+  // combo: show online courses (combos live there) + note about hardcopy
+  const res=matchCourses(cat,exam,subject,prod,medium);
+
+  if(res.list.length){
+    const intro = res.exact
+      ? (L==="hi"?"✅ ये रहे आपके लिए सटीक मिलान वाले विकल्प — सीधे खोलकर देखें/खरीदें:":"✅ Here are the exact matches — open or buy directly:")
+      : (L==="hi"?"आपके इस विषय का सीधा मिलान नहीं मिला, पर "+examClean+" के ये विकल्प उपयोगी होंगे (या नीचे 'सभी कोर्स' में अपना विषय खोजें):":"No direct hit for that exact subject, but these "+examClean+" options are relevant (or search your subject under 'Browse all' below):");
+    let html=intro+'<hr class="d">'+res.list.map(courseCard).join("");
+    if(res.total>res.list.length) html+='<div style="font-size:11px;color:#666;margin-top:6px">'+(L==="hi"?"और भी विकल्प उपलब्ध हैं — नीचे 'सभी कोर्स' देखें।":"More options available — see 'Browse all' below.")+'</div>';
+    addCTA(html);
+    if(prod==="combo"){
+      addCTA('<div class="offer">'+t("offerBox")+'</div>');
+    }
+  } else {
+    await say(L==="hi"
+      ?"इस संयोजन के लिए सीधा कोर्स अभी सूचीबद्ध नहीं दिखा — कृपया नीचे 'सभी कोर्स' खोलें या WhatsApp करें, हम सही कोर्स तुरंत बताएंगे।"
+      :"No direct course listed for this exact combination — please open 'Browse all' below or WhatsApp us and we'll point you to the right one right away.",700);
+  }
+  addCTA(browseBubble(apps,waMsg));
+  setTimeout(doMore,600);
 }
 
 // ── BOOT ──────────────────────────────────────────────
