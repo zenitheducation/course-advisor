@@ -4,77 +4,88 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zenith Education — Course Advisor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#e5ddd5;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:8px}
-.wrap{width:100%;max-width:440px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 28px rgba(0,0,0,.18);display:flex;flex-direction:column;height:95vh;max-height:840px}
-.hdr{background:#075e54;color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;position:relative}
-.av{width:44px;height:44px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.hi h3{font-size:14px;font-weight:600}
-.hi small{font-size:10.5px;color:#b2dfdb}
-.dot{width:7px;height:7px;background:#4caf50;border-radius:50%;display:inline-block;margin-right:3px}
-.rst{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.18);border:none;color:#fff;font-size:10px;padding:3px 8px;border-radius:10px;cursor:pointer}
-.sb{background:#004d40;color:#b2dfdb;font-size:10px;padding:4px 14px;display:flex;gap:12px;flex-shrink:0;overflow-x:auto;white-space:nowrap}
-.sb span strong{color:#80cbc4}
-
-/* Step bar */
-.stpbar{display:none;align-items:center;gap:3px;padding:6px 14px;background:#f5f5f5;flex-shrink:0;border-bottom:1px solid #e0e0e0}
-.stp{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;transition:all .3s}
-.stp.done{background:#25d366;color:#fff}
-.stp.active{background:#075e54;color:#fff}
-.stp.pend{background:#ddd;color:#999}
-.stpline{flex:1;height:2px;background:#ddd;transition:background .3s}
-.stpline.done{background:#25d366}
-
-/* Chat */
-.body{flex:1;overflow-y:auto;padding:9px 8px 80px 8px;background:#e5ddd5;scroll-behavior:smooth}
-.body::-webkit-scrollbar{width:3px}
-.body::-webkit-scrollbar-thumb{background:#bbb;border-radius:3px}
-.dd{text-align:center;font-size:10.5px;color:#666;background:rgba(255,255,255,.75);display:inline-block;padding:2px 10px;border-radius:8px;width:100%;margin:4px 0}
-.msg{display:flex;margin-bottom:4px}
-.msg.bot{justify-content:flex-start}
-.msg.user{justify-content:flex-end}
-.bub{max-width:85%;padding:7px 11px;border-radius:8px;font-size:12.5px;line-height:1.55;position:relative;word-break:break-word}
-.msg.bot .bub{background:#fff;border-radius:0 8px 8px 8px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.msg.user .bub{background:#dcf8c6;border-radius:8px 0 8px 8px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.tm{font-size:9.5px;color:#999;text-align:right;margin-top:2px}
-.bub strong{color:#075e54}
-.typ{background:#fff;border-radius:0 8px 8px 8px;padding:9px 13px;display:inline-flex;gap:4px;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.typ span{width:6px;height:6px;border-radius:50%;background:#aaa;animation:bop 1s infinite}
-.typ span:nth-child(2){animation-delay:.15s}
-.typ span:nth-child(3){animation-delay:.3s}
+:root{
+  --teal:#0b6e5f; --teal-dark:#064f47; --teal-grad:linear-gradient(135deg,#0c8772 0%,#064f47 100%);
+  --gold:#d4af37; --gold-soft:#f0d785;
+  --chatbg:#e9e2d8; --bot:#ffffff; --user:#dcf6d3;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Poppins','Segoe UI',sans-serif;background:#cfd8d5;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:8px;
+  background-image:radial-gradient(circle at 20% 10%,#dfe7e4,#bfccc8)}
+.wrap{width:100%;max-width:450px;background:var(--chatbg);border-radius:20px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(6,79,71,.28);display:flex;flex-direction:column;height:96vh;max-height:880px;position:relative}
+.hdr{background:var(--teal-grad);color:#fff;padding:13px 16px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;border-bottom:2px solid var(--gold)}
+.av{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#19a589,#0b6e5f);display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.25);border:2px solid var(--gold-soft)}
+.hi h3{font-size:15px;font-weight:600;letter-spacing:.2px;line-height:1.2}
+.hi .sub{font-size:10.5px;color:#cdeae3;display:flex;align-items:center;gap:5px;margin-top:2px}
+.tick{color:var(--gold);font-size:11px}
+.dot{width:7px;height:7px;background:#4ade80;border-radius:50%;display:inline-block;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
+.rst{position:absolute;right:12px;top:14px;background:rgba(255,255,255,.16);border:none;color:#fff;font-size:13px;
+  width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.rst:hover{background:rgba(255,255,255,.3);transform:rotate(-90deg)}
+.sb{background:var(--teal-dark);color:#bfe3db;font-size:10px;padding:6px 14px;display:flex;gap:14px;flex-shrink:0;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.sb::-webkit-scrollbar{display:none}
+.sb b{color:var(--gold-soft);font-weight:600}
+.stpbar{display:none;align-items:center;gap:4px;padding:9px 16px;background:#f3efe8;flex-shrink:0;border-bottom:1px solid #e3ddd2}
+.stp{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;transition:.3s}
+.stp.done{background:var(--teal);color:#fff}
+.stp.active{background:var(--gold);color:#3a2f00;box-shadow:0 0 0 4px rgba(212,175,55,.22)}
+.stp.pend{background:#dcd6ca;color:#9c9686}
+.stpline{flex:1;height:2px;background:#dcd6ca;transition:.3s}
+.stpline.done{background:var(--teal)}
+.body{flex:1;overflow-y:auto;padding:12px 10px 90px;background:var(--chatbg);scroll-behavior:smooth}
+.body::-webkit-scrollbar{width:4px}.body::-webkit-scrollbar-thumb{background:#c4bcae;border-radius:4px}
+.dd{text-align:center;font-size:10px;color:#6f7d79;background:rgba(255,255,255,.7);display:inline-block;padding:3px 12px;border-radius:10px;width:100%;margin:2px 0 8px}
+.msg{display:flex;margin-bottom:6px;animation:pop .25s ease}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg.bot{justify-content:flex-start}.msg.user{justify-content:flex-end}
+.bub{max-width:86%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.55;position:relative;word-break:break-word;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.msg.bot .bub{background:var(--bot);border-radius:3px 14px 14px 14px}
+.msg.user .bub{background:var(--user);border-radius:14px 3px 14px 14px}
+.tm{font-size:9px;color:#9aa6a2;text-align:right;margin-top:3px}
+.bub strong,.bub b{color:var(--teal)}
+hr.d{border:none;border-top:1px solid #eee;margin:7px 0}
+.typ{background:#fff;border-radius:3px 14px 14px 14px;padding:11px 15px;display:inline-flex;gap:5px;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.typ span{width:7px;height:7px;border-radius:50%;background:#bcc6c2;animation:bop 1s infinite}
+.typ span:nth-child(2){animation-delay:.15s}.typ span:nth-child(3){animation-delay:.3s}
 @keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-
-/* Options - FIXED: use button with full display */
-.optswrap{display:flex;flex-wrap:wrap;gap:6px;padding:4px 4px 8px 4px;margin-top:4px}
-.obtn{background:#fff;border:1.5px solid #25d366;color:#075e54;padding:7px 13px;border-radius:18px;font-size:12.5px;cursor:pointer;font-weight:500;line-height:1.3;transition:background .15s,color .15s;text-align:left;display:inline-block;-webkit-tap-highlight-color:rgba(37,211,102,.2)}
-.obtn:hover,.obtn:active{background:#25d366;color:#fff}
-.obtn.full{width:100%;border-radius:8px}
-
-/* CTA links */
-.ctawrap{margin-top:8px;display:flex;flex-direction:column;gap:6px}
-.cta{display:block;text-align:center;padding:10px 14px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,.1)}
-.cta:hover,.cta:active{opacity:.85}
-.cwa{background:#25d366;color:#fff !important}
-.cweb{background:#075e54;color:#fff !important}
-.ccall{background:#ff9800;color:#fff !important}
-.ca1{background:#1565c0;color:#fff !important}
-.ca2{background:#4527a0;color:#fff !important}
-.csm{background:#e65100;color:#fff !important}
-
-/* Footer */
-.ft{background:#f0f0f0;padding:7px 9px;display:flex;gap:7px;align-items:center;border-top:1px solid #ddd;flex-shrink:0}
-.ft input{flex:1;padding:8px 13px;border-radius:22px;border:none;background:#fff;font-size:13px;outline:none;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.snd{width:38px;height:38px;border-radius:50%;border:none;background:#25d366;color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-
-hr.d{border:none;border-top:1px solid #eee;margin:5px 0}
-.badge{display:inline-block;background:#e8f5e9;color:#2e7d32;border-radius:5px;padding:1px 6px;font-size:10.5px;font-weight:600;margin:1px 2px 1px 0}
-.offer{background:#fff8e1;border:1.5px solid #ffc107;border-radius:8px;padding:9px 11px;margin-top:7px;font-size:12px;line-height:1.5}
-.row{border-bottom:1px solid #f0f0f0;padding:4px 0;font-size:12px;line-height:1.4}
-.row:last-child{border:none}
-.pr{color:#b71c1c;font-weight:700}
-.op{color:#aaa;text-decoration:line-through;font-size:10.5px}
-.disc{color:#2e7d32;font-size:10.5px;font-weight:600}
+.optswrap{display:flex;flex-wrap:wrap;gap:7px;padding:6px 4px 10px;margin-top:2px}
+.obtn{background:#fff;border:1.5px solid var(--teal);color:var(--teal);padding:9px 14px;border-radius:22px;font-size:12.5px;cursor:pointer;
+  font-weight:500;line-height:1.35;text-align:left;transition:.15s;box-shadow:0 1px 3px rgba(6,79,71,.1)}
+.obtn:hover,.obtn:active{background:var(--teal);color:#fff;transform:translateY(-1px);box-shadow:0 4px 10px rgba(6,79,71,.22)}
+.obtn.full{width:100%;border-radius:12px}
+.obtn .arr{float:right;color:var(--gold);font-weight:700;margin-left:8px}
+.obtn:hover .arr{color:#fff}
+.card{border:1px solid #e6e0d4;border-radius:12px;padding:11px 12px;margin:8px 0;background:linear-gradient(180deg,#fff,#fbfaf6);box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.card .nm{font-weight:600;color:var(--teal);font-size:12.5px;line-height:1.35;margin-bottom:6px}
+.card .pr{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+.card .now{font-size:16px;font-weight:700;color:#0b6e5f}
+.card .was{font-size:11px;color:#aaa;text-decoration:line-through}
+.card .off{font-size:10px;font-weight:700;color:#3a2f00;background:var(--gold-soft);padding:2px 7px;border-radius:6px}
+.card .free{font-size:13px;font-weight:700;color:#1b9e57}
+.opencta{display:block;text-align:center;background:var(--teal-grad);color:#fff!important;padding:9px;border-radius:9px;font-size:12.5px;font-weight:600;text-decoration:none;transition:.15s}
+.opencta:hover{filter:brightness(1.08);box-shadow:0 4px 12px rgba(6,79,71,.3)}
+.badge{display:inline-block;background:#e8f3f0;color:var(--teal);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:600;margin:1px 3px 1px 0}
+.offer{background:linear-gradient(180deg,#fffaf0,#fff6e0);border:1.5px solid var(--gold);border-radius:11px;padding:11px 13px;margin-top:8px;font-size:11.5px;line-height:1.65;color:#4a4330}
+.offer b,.offer strong{color:#0b6e5f}
+.ctawrap{margin-top:9px;display:flex;flex-direction:column;gap:7px}
+.cta{display:block;text-align:center;padding:11px;border-radius:10px;font-size:12.5px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:.15s}
+.cta:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.cwa{background:#25d366;color:#fff!important;box-shadow:0 3px 9px rgba(37,211,102,.3)}
+.ccall{background:var(--gold);color:#3a2f00!important}
+.con{background:var(--teal);color:#fff!important}
+.cnotes{background:#1f7a68;color:#fff!important}
+.csm{background:#fff;color:var(--teal)!important;border:1.5px solid var(--teal)}
+.ft{background:#f3efe8;padding:9px 11px;display:flex;gap:8px;align-items:center;border-top:1px solid #e0dccf;flex-shrink:0}
+.ft input{flex:1;padding:11px 15px;border-radius:24px;border:1px solid #ddd6c8;background:#fff;font-size:13px;outline:none;font-family:inherit;transition:.2s}
+.ft input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(11,110,95,.12)}
+.snd{width:42px;height:42px;border-radius:50%;border:none;background:var(--teal-grad);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.snd:hover{filter:brightness(1.1);transform:scale(1.05)}
 </style>
 </head>
 <body>
@@ -83,16 +94,12 @@ hr.d{border:none;border-top:1px solid #eee;margin:5px 0}
     <div class="av">🎓</div>
     <div class="hi">
       <h3 id="hT">Zenith Education Advisor</h3>
-      <small><span class="dot"></span><span id="hS">Jaipur • Est. 1998 • 10,000+ Selections</span></small>
+      <div class="sub"><span class="dot"></span><span id="hS">Online</span> <span class="tick">✔</span> <span id="hE">Jaipur · Est. 1998</span></div>
     </div>
-    <button class="rst" onclick="doRestart()">↺</button>
+    <button class="rst" onclick="doRestart()" title="Restart">↺</button>
   </div>
   <div class="sb">
-    <span>🏆 <strong>2,300+</strong> NET/SET</span>
-    <span>🎓 <strong>300+</strong> JRF</span>
-    <span>👩‍🏫 <strong>500+</strong> RPSC Grade</span>
-    <span>🏛️ <strong>200+</strong> Asst.Prof</span>
-    <span>📅 <strong>27 Yrs</strong></span>
+    <span>🏆 <b>2,300+</b> NET/SET</span><span>🎖️ <b>300+</b> JRF</span><span>👩‍🏫 <b>500+</b> RPSC Grade</span><span>🏛️ <b>200+</b> Asst. Prof</span><span>📅 <b>27 Yrs</b></span>
   </div>
   <div class="stpbar" id="stpbar">
     <div class="stp pend" id="s1">1</div><div class="stpline" id="l1"></div>
@@ -108,816 +115,283 @@ hr.d{border:none;border-top:1px solid #eee;margin:5px 0}
   </div>
 </div>
 <script>
-// ── CONFIG ─────────────────────────────────────────────────────────────────
 const WA="918302450450";
 const ONLINE_URL="https://online.zenitheducation.net";
-const NOTES_URL ="https://notes.zenitheducation.net";
-const OA = "https://play.google.com/store/apps/details?id=co.alicia.pgicm";
-const NA = "https://play.google.com/store/apps/details?id=co.tarly.xbcpp";
+const NOTES_URL="https://notes.zenitheducation.net";
 const SAMPLE="https://drive.google.com/drive/folders/1vGBLfecqmEqMQPbq051_DajjGKJUmFSt?usp=sharing";
-const YT="https://www.zenitheducation.net/page/youtube-for-demo-classes/6895d74ddc436cc447b2d89d";
-
-// ── DIRECT CATEGORY DEEP LINKS (live app scan) ──────────────────────────────
-// Online Courses App (pgicm) — lands directly on exam's course list
-const OC={
-  ap:   "https://online.zenitheducation.net/courses?mainCategory=762&subCatList=[356366]&filterId=1&sortId=7",
-  pgt:  "https://online.zenitheducation.net/courses?mainCategory=762&subCatList=[356365]&filterId=1&sortId=7",
-  rpsc1:"https://online.zenitheducation.net/courses?mainCategory=762&subCatList=[356365]&filterId=1&sortId=7",
-  rpsc2:"https://online.zenitheducation.net/courses?mainCategory=762&subCatList=[356365]&filterId=1&sortId=7",
-  net:  "https://online.zenitheducation.net/courses?mainCategory=762&filterId=1&sortId=7",
-  ras:  "https://online.zenitheducation.net/courses?mainCategory=762&filterId=1&sortId=7",
-  rssb: "https://online.zenitheducation.net/courses?mainCategory=762&filterId=1&sortId=7",
-};
-// Notes & Books App (xbcpp) — lands directly on exam's notes list
-const NC={
-  ap:   "https://notes.zenitheducation.net/courses?mainCategory=762&subCatList=[356383]&filterId=1&sortId=7",
-  pgt:  "https://notes.zenitheducation.net/courses?mainCategory=762&subCatList=[356381]&filterId=1&sortId=7",
-  rpsc1:"https://notes.zenitheducation.net/courses?mainCategory=762&subCatList=[356380]&filterId=1&sortId=7",
-  rpsc2:"https://notes.zenitheducation.net/courses?mainCategory=762&subCatList=[356380]&filterId=1&sortId=7",
-  net:  "https://notes.zenitheducation.net/courses?mainCategory=762&subCatList=[356382]&filterId=1&sortId=7",
-  ras:  "https://notes.zenitheducation.net/courses?mainCategory=762&filterId=1&sortId=7",
-  rssb: "https://notes.zenitheducation.net/courses?mainCategory=762&filterId=1&sortId=7",
-};
-function ocLink(exam){return OC[exam]||ONLINE_URL+"/courses";}
-function ncLink(exam){return NC[exam]||NOTES_URL+"/courses";}
-
-// ── BILINGUAL TEXT ──────────────────────────────────────────────────────────
-const T={
-en:{
-  langQ:"🙏 Welcome to <strong>Zenith Education, Jaipur</strong>!<br><br>Please choose your language to continue:",
-  hi:"🇮🇳 हिंदी में जारी रखें",
-  en:"🇬🇧 Continue in English",
-  intro:"Great! Let me help you find the right course or notes. I'll ask you <strong>5 quick questions</strong>. 😊",
-  q1:"<strong>Your name?</strong>",
-  q2:"<strong>Which exam are you preparing for?</strong>",
-  q3:"<strong>Which subject?</strong>",
-  q3b:"We have notes for almost every subject! Type your subject below or contact us — we'll guide you.",
-  q4:"<strong>Which medium?</strong>",
-  mH:"🇮🇳 Hindi Medium",mE:"🇬🇧 English Medium",mB:"🔀 Both / Either",
-  q5:"<strong>What would you like?</strong>",
-  p1:"🎥 Online Course (Live / Recorded / Hybrid)",
-  p2:"📱 E-Notes (Digital, read in app — ₹499–999)",
-  p3:"📦 Hard Copy Notes (Printed, home delivery)",
-  p4:"📝 Test Series",
-  p5:"🎁 Combo: Online Course + Hard Copy Notes",
-  pX:"🤔 Not sure — help me choose",
-  whyBtn:"🏆 Why choose Zenith?",
-  sampleBtn:"📄 Free Sample Notes",
-  expertBtn:"📞 Talk to Expert",
-  newBtn:"🔄 New Search",
-  menuBtn:"🏠 Main Menu",
-  more:"Anything else I can help with? 😊",
-  waOrder:"💬 WhatsApp us to Order / Enquire",
-  browseCo:"🎥 Browse Online Courses App",
-  browseNo:"📗 Browse Notes & Books App",
-  viewSamp:"📄 Free Sample Notes",
-  callUs:"📞 Call +91 8302 450 450",
-  noOnline:"⚠️ <strong>Online courses are available for selected subjects only.</strong> For your subject, we recommend our <strong>E-Notes</strong> or <strong>Hard Copy Notes</strong> — available in both Hindi & English.",
-  priceNote:"📌 For exact subject pricing, please WhatsApp us or browse the app — we'll reply within minutes.",
-  offerBox:"🎁 <strong>Special Offer:</strong> Buy <strong>Online Course + Hard Copy Notes</strong> together → get up to <strong>₹1,000 OFF</strong> on the Hard Copy Notes!<br><small>Mention this offer on WhatsApp to avail the discount.</small>",
-},
-hi:{
-  langQ:"🙏 <strong>ज़ेनिथ एजुकेशन, जयपुर</strong> में स्वागत है!<br><br>जारी रखने के लिए अपनी भाषा चुनें:",
-  hi:"🇮🇳 हिंदी में जारी रखें",
-  en:"🇬🇧 Continue in English",
-  intro:"बढ़िया! मैं आपको सही कोर्स या नोट्स खोजने में मदद करूंगा। बस <strong>5 सवालों</strong> के जवाब दें। 😊",
-  q1:"<strong>आपका नाम?</strong>",
-  q2:"<strong>आप किस परीक्षा की तैयारी कर रहे हैं?</strong>",
-  q3:"<strong>कौन सा विषय?</strong>",
-  q3b:"हमारे पास लगभग हर विषय के नोट्स उपलब्ध हैं! नीचे अपना विषय टाइप करें या हमसे संपर्क करें।",
-  q4:"<strong>कौन सा माध्यम?</strong>",
-  mH:"🇮🇳 हिंदी माध्यम",mE:"🇬🇧 अंग्रेजी माध्यम",mB:"🔀 दोनों / कोई भी",
-  q5:"<strong>आप क्या लेना चाहेंगे?</strong>",
-  p1:"🎥 ऑनलाइन कोर्स (लाइव / रिकॉर्डेड / हाइब्रिड)",
-  p2:"📱 ई-नोट्स (डिजिटल, ऐप में पढ़ें — ₹499–999)",
-  p3:"📦 हार्ड कॉपी नोट्स (प्रिंटेड, घर पर डिलीवरी)",
-  p4:"📝 टेस्ट सीरीज़",
-  p5:"🎁 कॉम्बो: ऑनलाइन कोर्स + हार्ड कॉपी नोट्स",
-  pX:"🤔 समझ नहीं आया — मदद करें",
-  whyBtn:"🏆 ज़ेनिथ क्यों चुनें?",
-  sampleBtn:"📄 फ्री सैम्पल नोट्स",
-  expertBtn:"📞 एक्सपर्ट से बात करें",
-  newBtn:"🔄 नई खोज",
-  menuBtn:"🏠 मुख्य मेनू",
-  more:"क्या मैं और कुछ मदद कर सकता हूं? 😊",
-  waOrder:"💬 WhatsApp पर ऑर्डर / पूछताछ करें",
-  browseCo:"🎥 ऑनलाइन कोर्स ऐप देखें",
-  browseNo:"📗 नोट्स और बुक्स ऐप देखें",
-  viewSamp:"📄 फ्री सैम्पल नोट्स",
-  callUs:"📞 कॉल करें +91 8302 450 450",
-  noOnline:"⚠️ <strong>ऑनलाइन कोर्स केवल चुनिंदा विषयों में उपलब्ध है।</strong> आपके विषय के लिए हम <strong>ई-नोट्स</strong> या <strong>हार्ड कॉपी नोट्स</strong> सुझाते हैं — हिंदी और अंग्रेजी दोनों माध्यमों में।",
-  priceNote:"📌 सटीक कीमत के लिए WhatsApp करें या ऐप देखें — हम कुछ ही मिनटों में जवाब देंगे।",
-  offerBox:"🎁 <strong>विशेष ऑफर:</strong> <strong>ऑनलाइन कोर्स + हार्ड कॉपी नोट्स</strong> एक साथ लें → हार्ड कॉपी नोट्स पर <strong>₹1,000 तक की छूट!</strong><br><small>WhatsApp पर यह ऑफर बताएं और छूट पाएं।</small>",
-}};
-
-// ── EXAM & SUBJECT DATA ─────────────────────────────────────────────────────
-const EXAMS_EN=[
-  {id:"ap",   l:"🏛️ Assistant Professor (RPSC / State PSCs / RSSB Teaching Associate)"},
-  {id:"pgt",  l:"📚 PGT / TGT / CTET / KVS / NVS / DSSSB / EMRS / AWES"},
-  {id:"rpsc1",l:"🏫 RPSC 1st Grade — School Lecturer"},
-  {id:"rpsc2",l:"🏫 RPSC 2nd Grade — Senior Teacher"},
-  {id:"net",  l:"🎓 UGC NET / JRF / CSIR NET / State SET / SLET"},
-  {id:"ras",  l:"🏛️ RAS Prelims & Mains / State PCS"},
-  {id:"rssb", l:"💻 RSSB / JVVNL / CET / PSI / Computer Instructor"},
-];
-const EXAMS_HI=[
-  {id:"ap",   l:"🏛️ सहायक प्राध्यापक (RPSC / राज्य PSC / RSSB Teaching Associate)"},
-  {id:"pgt",  l:"📚 PGT / TGT / CTET / KVS / NVS / DSSSB / EMRS / AWES"},
-  {id:"rpsc1",l:"🏫 RPSC प्रथम श्रेणी — स्कूल लेक्चरर"},
-  {id:"rpsc2",l:"🏫 RPSC द्वितीय श्रेणी — वरिष्ठ शिक्षक"},
-  {id:"net",  l:"🎓 UGC NET / JRF / CSIR NET / State SET / SLET"},
-  {id:"ras",  l:"🏛️ RAS प्रारंभिक और मुख्य / State PCS"},
-  {id:"rssb", l:"💻 RSSB / JVVNL / CET / PSI / कंप्यूटर प्रशिक्षक"},
-];
-const SUBJECTS={
-  ap:   ["Political Science / राजनीति विज्ञान","History / इतिहास","Geography / भूगोल","Economics / अर्थशास्त्र","Commerce / वाणिज्य","Hindi Literature / हिंदी साहित्य","English Literature / अंग्रेजी साहित्य","Sanskrit / संस्कृत","Sociology / समाजशास्त्र","Psychology / मनोविज्ञान","Education / शिक्षाशास्त्र","Mathematics / गणित","Physics / भौतिकी","Chemistry / रसायन विज्ञान","Botany / वनस्पति विज्ञान","Zoology / प्राणी विज्ञान","Law / कानून","Computer Science","Physical Education / शारीरिक शिक्षा","Home Science / गृह विज्ञान","Public Administration","Mass Communication","Library Science","HRM / Management","ABST","BADM","EAFM","Other / अन्य विषय"],
-  pgt:  ["Geography","Political Science / Civics","Hindi Literature","English Literature","Commerce","History","Mathematics","Biology","Computer Science","Economics","Sociology","Science","Social Science","Physical Education","Home Science","Sanskrit","Physics","Chemistry","Librarian","Other / अन्य विषय"],
-  rpsc1:["Sociology / समाजशास्त्र","History / इतिहास","Geography / भूगोल","Political Science / राजनीति","English Literature","Hindi Literature / हिंदी","Sanskrit / संस्कृत","Mathematics / गणित","Physics / भौतिकी","Chemistry / रसायन","Biology / जीव विज्ञान","Commerce / वाणिज्य","Economics / अर्थशास्त्र","Home Science / गृह विज्ञान","Physical Education","Education / शिक्षा","Computer Science","Other / अन्य"],
-  rpsc2:["Science / विज्ञान","Social Science / सामाजिक विज्ञान","Hindi Literature / हिंदी","English","Mathematics / गणित","Sanskrit","Other / अन्य"],
-  net:  ["Paper 1 — General / सामान्य","Commerce / वाणिज्य","Economics / अर्थशास्त्र","Political Science / राजनीति","History / इतिहास","Geography / भूगोल","Sociology / समाजशास्त्र","Psychology / मनोविज्ञान","English Literature","Hindi Literature / हिंदी","Sanskrit / संस्कृत","Education / शिक्षा","Public Administration","HRM / Management / Labour Welfare","Law / कानून","Library Science","Mass Communication","Home Science","Physical Education","Yoga","Agriculture / कृषि","Forensic Science","Environment Science","Computer Science","CSIR — Life Science","CSIR — Chemical Science","CSIR — Physical Science","CSIR — Mathematical Science","Other / अन्य"],
-  ras:  ["Complete Package (Pre + Mains)","Prelims Only","Mains GS Papers","Other / अन्य"],
-  rssb: ["JVVNL Junior Accountant","RSSB Computer Instructor","RSSB CET","RPSC PSI","Other / अन्य"],
-};
-
-// Subjects where online course actually exists (based on app scan)
-const HAS_ONLINE={
-  ap:   ["Political Science","History","Geography","Economics","Commerce","Hindi Literature","English Literature","Sanskrit","Sociology","Computer Science","HRM","Management","Labour","ABST","BADM","EAFM"],
-  pgt:  ["Geography","Political Science","Hindi Literature","English Literature","Commerce","History","Mathematics","Biology","Computer Science","Economics","Sociology","Hindi"],
-  rpsc1:["Sociology","Mathematics","Sanskrit","Science"],
-  rpsc2:["Science","Social Science"],
-  net:  ["Commerce","Economics","Political Science","History","Geography","Sociology","English Literature","Hindi Literature","Sanskrit","Education","HRM","Management","Computer Science","Labour"],
-  ras:  ["Complete"],
-  rssb: ["JVVNL","Accountant"],
-};
-
-// Confirmed fees from app scan (pgicm + xbcpp)
-const FEES={
-  // E-Notes
-  enAP:"₹999 per subject",
-  enAP_off:"(50% OFF — regular ₹2,000)",
-  enGrade:"₹499 per item",
-  enCSIR:"₹499",
-  enPGT:"₹499–999",
-  enRAS:"₹1,001–2,501",
-  // Hard Copy
-  hcAP:"₹2,400 per subject",
-  hcAP_off:"(52% OFF — regular ₹5,000)",
-  hcKVS:"₹700–1,500 per subject",
-  hcGrade:"₹2,200+ (varies by subject)",
-  hcJVVNL:"₹1,400",
-  hcJVVNL_off:"(30% OFF — regular ₹2,000)",
-  hcRAS:"₹6,000 (40% OFF — regular ₹10,000)",
-  // Online
-  ocAP_combo:"₹3,000–5,001",
-  ocPGT_combo:"₹999–3,000",
-  ocCTET:"₹1,499",
-  ocKVS_spec:"₹1,499–1,999",
-  ocJVVNL:"₹4,000",
-  ocJVVNL_off:"(60% OFF — regular ₹10,000)",
-  ocRAS_demo:"₹1 (Demo + Sample Notes)",
-  // Test series
-  tsGrade1:"₹500 per subject",
-  tsGrade2SS:"₹300",
-  tsGrade2En:"₹500",
-};
-
-// ── STATE ─────────────────────────────────────────────────────────────────
-let L="en", phase="lang";
-const A={name:"",exam:"",subject:"",medium:"",product:""};
-const t=k=>T[L][k];
-
-// ── DOM HELPERS ────────────────────────────────────────────────────────────
-function now(){return new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});}
-function $body(){return document.getElementById("body");}
-function scrollDown(){const b=$body();setTimeout(()=>{b.scrollTop=b.scrollHeight;},50);}
-
-function addMsg(who,html){
-  const d=document.createElement("div");d.className="msg "+who;
-  const b=document.createElement("div");b.className="bub";
-  b.innerHTML=html+`<div class="tm">${now()}${who==="user"?" ✓✓":""}</div>`;
-  d.appendChild(b);$body().appendChild(d);scrollDown();
-}
-
-function addOpts(arr){
-  rmOpts();
-  const w=document.createElement("div");w.className="optswrap";w.id="opts";
-  arr.forEach(o=>{
-    const btn=document.createElement("button");
-    btn.type="button";
-    btn.className="obtn"+(o.full?" full":"");
-    btn.innerHTML=o.l;
-    btn.addEventListener("click",function(){
-      rmOpts();
-      addMsg("user",this.textContent);
-      setTimeout(o.a,300);
-    });
-    w.appendChild(btn);
-  });
-  $body().appendChild(w);
-  scrollDown();
-  // Extra scroll after a tick to ensure visibility
-  setTimeout(()=>{
-    const opts=document.getElementById("opts");
-    if(opts) opts.scrollIntoView({behavior:"smooth",block:"end"});
-  },100);
-}
-
-function rmOpts(){const o=document.getElementById("opts");if(o)o.remove();}
-
-function typing(ms=700){
-  return new Promise(r=>{
-    const d=document.createElement("div");d.className="msg bot";d.id="typdiv";
-    d.innerHTML='<div class="typ"><span></span><span></span><span></span></div>';
-    $body().appendChild(d);scrollDown();
-    setTimeout(()=>{d.remove();r();},ms);
-  });
-}
-
-async function say(html,ms=700){await typing(ms);addMsg("bot",html);}
-
-function addCTA(html){
-  const d=document.createElement("div");d.className="msg bot";
-  d.innerHTML=`<div class="bub">${html}<div class="tm">${now()}</div></div>`;
-  $body().appendChild(d);scrollDown();
-  setTimeout(()=>scrollDown(),150);
-}
-
-function waURL(msg){return `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;}
-
-function stdCTA(waMsg, exam="", prod=""){
-  // Use direct category links when exam is known
-  const courseBtn = (exam && (prod==="online"||prod==="combo"))
-    ? `<a class="cta ca1" href="${ocLink(exam)}" target="_blank" rel="noopener">🎥 ${L==="hi"?"इस परीक्षा के कोर्स देखें →":"View Courses for This Exam →"}</a>`
-    : `<a class="cta ca1" href="${ONLINE_URL}/courses" target="_blank" rel="noopener">${t("browseCo")}</a>`;
-  const notesBtn = (exam && (prod==="enotes"||prod==="hardcopy"||prod==="combo"||prod===""))
-    ? `<a class="cta ca2" href="${ncLink(exam)}" target="_blank" rel="noopener">📗 ${L==="hi"?"इस परीक्षा के नोट्स देखें →":"View Notes for This Exam →"}</a>`
-    : `<a class="cta ca2" href="${NOTES_URL}/courses" target="_blank" rel="noopener">${t("browseNo")}</a>`;
-  return `<div class="ctawrap">
-    <a class="cta cwa" href="${waURL(waMsg)}" target="_blank" rel="noopener">${t("waOrder")}</a>
-    ${courseBtn}
-    ${notesBtn}
-    <a class="cta csm" href="${SAMPLE}" target="_blank" rel="noopener">${t("viewSamp")}</a>
-  </div>`;
-}
-
-function setStep(n){
-  document.getElementById("stpbar").style.display="flex";
-  for(let i=1;i<=5;i++){
-    document.getElementById("s"+i).className="stp "+(i<n?"done":i===n?"active":"pend");
-    if(i<5)document.getElementById("l"+i).className="stpline"+(i<n?" done":"");
-  }
-}
-
-// ── FLOW ───────────────────────────────────────────────────────────────────
-async function startLang(){
-  phase="lang";
-  document.getElementById("stpbar").style.display="none";
-  await say(t("langQ"),1000);
-  addOpts([
-    {l:"🇮🇳 हिंदी में जारी रखें", a:()=>setLang("hi")},
-    {l:"🇬🇧 Continue in English", a:()=>setLang("en")},
-  ]);
-}
-
-async function setLang(l){
-  L=l;
-  document.getElementById("hT").textContent=l==="hi"?"ज़ेनिथ एजुकेशन सलाहकार":"Zenith Education Advisor";
-  document.getElementById("hS").textContent=l==="hi"?"जयपुर • स्था. 1998 • 10,000+ चयन":"Jaipur • Est. 1998 • 10,000+ Selections";
-  document.getElementById("inp").placeholder=l==="hi"?"अपना जवाब टाइप करें…":"Type your answer…";
-  await say(t("intro"),900);
-  await askQ1();
-}
-
-async function askQ1(){phase="name";setStep(1);await say(t("q1"),600);}
-
-async function gotName(n){
-  A.name=n||"Friend";
-  const greet=L==="hi"?`आपसे मिलकर खुशी हुई, <strong>${A.name}!</strong> 👋`:`Nice to meet you, <strong>${A.name}!</strong> 👋`;
-  await say(greet,600);
-  await askQ2();
-}
-
-async function askQ2(){
-  phase="exam";setStep(2);
-  await say(t("q2"),600);
-  const exams=L==="hi"?EXAMS_HI:EXAMS_EN;
-  addOpts(exams.map(e=>({l:e.l,full:true,a:()=>gotExam(e.id)})));
-}
-
-async function gotExam(id){A.exam=id;await askQ3();}
-
-async function askQ3(){
-  phase="subject";setStep(3);
-  await say(t("q3"),600);
-  const subs=SUBJECTS[A.exam]||[];
-  if(subs.length===0){
-    await say(t("q3b"),600);
-    return;
-  }
-  addOpts(subs.map(sub=>({l:sub,full:true,a:()=>gotSubject(sub)})));
-}
-
-async function gotSubject(sub){A.subject=sub;await askQ4();}
-
-async function askQ4(){
-  phase="medium";setStep(4);
-  await say(t("q4"),600);
-  addOpts([
-    {l:t("mH"),a:()=>gotMedium("Hindi")},
-    {l:t("mE"),a:()=>gotMedium("English")},
-    {l:t("mB"),a:()=>gotMedium("Both")},
-  ]);
-}
-
-async function gotMedium(m){A.medium=m;await askQ5();}
-
-async function askQ5(){
-  phase="product";setStep(5);
-  const sub=A.subject.toLowerCase();
-  const hasOnline=(HAS_ONLINE[A.exam]||[]).some(k=>sub.includes(k.toLowerCase())||k.toLowerCase().includes(sub.split("/")[0].trim().toLowerCase()));
-  await say(t("q5"),600);
-  const btns=[];
-  if(hasOnline) btns.push({l:t("p1"),full:true,a:()=>doSuggest("online")});
-  btns.push({l:t("p2"),full:true,a:()=>doSuggest("enotes")});
-  btns.push({l:t("p3"),full:true,a:()=>doSuggest("hardcopy")});
-  btns.push({l:t("p4"),full:true,a:()=>doSuggest("tests")});
-  if(hasOnline) btns.push({l:t("p5"),full:true,a:()=>doSuggest("combo")});
-  btns.push({l:t("pX"),full:true,a:()=>doSuggest("help")});
-  addOpts(btns);
-}
-
-// ── SUGGEST ─────────────────────────────────────────────────────────────────
-async function doSuggest(prod){
-  A.product=prod;
-  const {name,exam,subject,medium}=A;
-  const examLabel=(L==="hi"?EXAMS_HI:EXAMS_EN).find(e=>e.id===exam)?.l.replace(/[🏛️📚🏫🎓💻]/g,"").trim()||exam;
-  const medStr={Hindi:L==="hi"?"हिंदी माध्यम":"Hindi Medium",English:L==="hi"?"अंग्रेजी माध्यम":"English Medium",Both:L==="hi"?"दोनों माध्यम":"Both Mediums"}[medium]||medium;
-
-  const header=L==="hi"
-    ?`<strong>${name}</strong> जी, आपके लिए सिफारिश:<br><span class="badge">${subject.split("/")[0].trim()}</span><span class="badge">${medStr}</span><hr class="d">`
-    :`<strong>Recommendation for ${name}:</strong><br><span class="badge">${subject.split("/")[0].trim()}</span><span class="badge">${medStr}</span><hr class="d">`;
-
-  const waBase=L==="hi"
-    ?`नमस्ते ज़ेनिथ! मेरा नाम ${name} है। मैं ${examLabel} — ${subject} (${medStr}) की तैयारी कर रहा/रही हूं।`
-    :`Hi Zenith! My name is ${name}. Preparing for ${examLabel} — ${subject} (${medStr}).`;
-
-  if(prod==="online") await showOnline(header,exam,subject,waBase);
-  else if(prod==="enotes") await showENotes(header,exam,subject,waBase);
-  else if(prod==="hardcopy") await showHardCopy(header,exam,subject,waBase);
-  else if(prod==="tests") await showTests(header,exam,subject,waBase);
-  else if(prod==="combo") await showCombo(header,exam,subject,waBase);
-  else await showHelp(header,exam,subject,waBase);
-  setTimeout(doMore,500);
-}
-
-// ── PRODUCT SCREENS ──────────────────────────────────────────────────────────
-async function showOnline(hdr,exam,subject,waBase){
-  const sub=subject.toLowerCase();
-  const hasIt=(HAS_ONLINE[exam]||[]).some(k=>sub.includes(k.toLowerCase())||k.toLowerCase().includes(sub.split("/")[0].trim().toLowerCase()));
-  if(!hasIt){
-    await say(hdr+t("noOnline"),900);
-    addCTA(stdCTA(waBase+(L==="hi"?" मुझे E-Notes या Hard Copy Notes के बारे में जानकारी चाहिए।":" I need E-Notes or Hard Copy Notes. Please guide me."), exam, "enotes"));
-    return;
-  }
-  const fee=getFeeOnline(exam);
-  const body=L==="hi"
-    ?`🎥 <strong>ऑनलाइन कोर्स उपलब्ध है!</strong><hr class="d">
-✅ लाइव + रिकॉर्डेड + हाइब्रिड क्लासेज<br>
-✅ संदेह-समाधान (Doubt-clearing)<br>
-✅ PYQ टेस्ट सीरीज़ शामिल<br>
-✅ मोबाइल, लैपटॉप, PC पर<br>
-✅ EMI सुविधा उपलब्ध<br><br>
-💰 <strong>अनुमानित शुल्क:</strong> <span class="pr">${fee.price}</span> ${fee.note?`<span class="op">${fee.note}</span>`:""}<br><br>
-📱 <strong>ऐप:</strong> Zenith Online Courses (iOS/Android)<br>
-Classplus App → Code: <strong>pgicm</strong><br>
-🌐 <strong>वेब:</strong> online.zenitheducation.net<br><br>
-${t("priceNote")}`
-    :`🎥 <strong>Online Course available!</strong><hr class="d">
-✅ Live + Recorded + Hybrid classes<br>
-✅ Doubt-clearing sessions<br>
-✅ PYQ Test Series included<br>
-✅ Mobile, laptop, PC — any device<br>
-✅ EMI available<br><br>
-💰 <strong>Approx. fee:</strong> <span class="pr">${fee.price}</span> ${fee.note?`<span class="op">${fee.note}</span>`:""}<br><br>
-📱 <strong>App:</strong> Zenith Online Courses (iOS/Android)<br>
-Classplus App → Code: <strong>pgicm</strong><br>
-🌐 <strong>Web:</strong> online.zenitheducation.net<br><br>
-${t("priceNote")}`;
-  await say(hdr+body,1000);
-  addCTA(stdCTA(waBase+(L==="hi"?" मुझे ऑनलाइन कोर्स के बारे में जानकारी चाहिए।":" I'm interested in the Online Course. Please share details and fee."), exam, "online"));
-}
-
-async function showENotes(hdr,exam,subject,waBase){
-  const fee=getFeeENotes(exam);
-  const body=L==="hi"
-    ?`📱 <strong>ई-नोट्स</strong><hr class="d">
-<span class="badge">केवल ऐप/वेब में पढ़ें</span><span class="badge">PYQ-आधारित</span><br><br>
-✅ लगभग सभी विषयों में उपलब्ध<br>
-✅ हिंदी और अंग्रेजी दोनों माध्यम<br>
-✅ प्रश्न बैंक शामिल<br>
-✅ खरीदते ही तुरंत एक्सेस<br>
-✅ 2026 पाठ्यक्रम के अनुसार<br><br>
-💰 <strong>शुल्क:</strong> <span class="pr">${fee.price}</span> ${fee.note?`<span class="disc">${fee.note}</span>`:""}<br><br>
-📱 <strong>ऐप:</strong> Zenith Notes & Books (iOS/Android)<br>
-Classplus App → Code: <strong>xbcpp</strong><br>
-🌐 <strong>वेब:</strong> notes.zenitheducation.net<br><br>
-${t("priceNote")}`
-    :`📱 <strong>E-Notes</strong><hr class="d">
-<span class="badge">Read-only in App/Web</span><span class="badge">PYQ-engineered</span><br><br>
-✅ Available for almost all subjects<br>
-✅ Hindi & English mediums both<br>
-✅ Question bank included<br>
-✅ Instant access after purchase<br>
-✅ Updated for 2026 syllabus<br><br>
-💰 <strong>Fee:</strong> <span class="pr">${fee.price}</span> ${fee.note?`<span class="disc">${fee.note}</span>`:""}<br><br>
-📱 <strong>App:</strong> Zenith Notes & Books (iOS/Android)<br>
-Classplus App → Code: <strong>xbcpp</strong><br>
-🌐 <strong>Web:</strong> notes.zenitheducation.net<br><br>
-${t("priceNote")}`;
-  await say(hdr+body,1000);
-  addCTA(stdCTA(waBase+(L==="hi"?" मुझे ई-नोट्स के बारे में जानकारी और लिंक चाहिए।":" I need E-Notes. Please share the link and confirm pricing."), exam, "enotes"));
-}
-
-async function showHardCopy(hdr,exam,subject,waBase){
-  const fee=getFeeHardCopy(exam);
-  const body=L==="hi"
-    ?`📦 <strong>हार्ड कॉपी नोट्स</strong><hr class="d">
-<span class="badge">घर पर डिलीवरी</span><span class="badge">प्रश्न बैंक सहित</span><br><br>
-✅ प्रिंटेड द्विभाषी मास्टर नोट्स<br>
-✅ प्रश्न बैंक / PYQ बैंक शामिल<br>
-✅ हिंदी और अंग्रेजी दोनों माध्यम<br>
-✅ पूरे भारत में डिलीवरी<br>
-✅ 2026 पाठ्यक्रम के अनुसार<br><br>
-💰 <strong>शुल्क:</strong> <span class="pr">${fee.price}</span> ${fee.note?`<span class="disc">${fee.note}</span>`:""}<br><br>
-📱 <strong>ऐप:</strong> Zenith Notes & Books → Code: <strong>xbcpp</strong><br>
-🌐 <strong>वेब:</strong> notes.zenitheducation.net<br><br>
-${t("priceNote")}`
-    :`📦 <strong>Hard Copy Notes</strong><hr class="d">
-<span class="badge">Home Delivery</span><span class="badge">Q-Bank Included</span><br><br>
-✅ Printed bilingual master notes<br>
-✅ Question bank / PYQ bank included<br>
-✅ Both Hindi & English mediums<br>
-✅ Delivered across India<br>
-✅ 2026 syllabus updated<br><br>
-💰 <strong>Fee:</strong> <span class="pr">${fee.price}</span> ${fee.note?`<span class="disc">${fee.note}</span>`:""}<br><br>
-📱 <strong>App:</strong> Zenith Notes & Books → Code: <strong>xbcpp</strong><br>
-🌐 <strong>Web:</strong> notes.zenitheducation.net<br><br>
-${t("priceNote")}`;
-  await say(hdr+body,1000);
-  addCTA(stdCTA(waBase+(L==="hi"?" मुझे हार्ड कॉपी नोट्स चाहिए — उपलब्धता और कीमत बताएं।":" I want Hard Copy Notes. Please share availability and pricing."), exam, "hardcopy"));
-}
-
-async function showTests(hdr,exam,subject,waBase){
-  let body="";
-  if(exam==="rpsc1"||exam==="rpsc2"){
-    body=L==="hi"
-      ?`📝 <strong>टेस्ट सीरीज़ — RPSC ग्रेड</strong><hr class="d">
-<div class="row">RPSC प्रथम श्रेणी — विषय-वार टेस्ट सीरीज़: <span class="pr">${FEES.tsGrade1}</span></div>
-<div class="row">RPSC द्वितीय श्रेणी — सामाजिक विज्ञान: <span class="pr">${FEES.tsGrade2SS}</span></div>
-<div class="row">RPSC द्वितीय श्रेणी — अंग्रेजी: <span class="pr">${FEES.tsGrade2En}</span></div><br>
-${t("priceNote")}`
-      :`📝 <strong>Test Series — RPSC Grade</strong><hr class="d">
-<div class="row">RPSC 1st Grade subject-wise: <span class="pr">${FEES.tsGrade1}</span></div>
-<div class="row">RPSC 2nd Grade Social Science: <span class="pr">${FEES.tsGrade2SS}</span></div>
-<div class="row">RPSC 2nd Grade English: <span class="pr">${FEES.tsGrade2En}</span></div><br>
-${t("priceNote")}`;
-  } else {
-    body=L==="hi"
-      ?`📝 <strong>टेस्ट सीरीज़</strong><hr class="d">आपके विषय/परीक्षा के लिए टेस्ट सीरीज़ उपलब्ध हो सकती है। कृपया हमसे WhatsApp पर पूछें।`
-      :`📝 <strong>Test Series</strong><hr class="d">Test series may be available for your subject/exam. Please ask us on WhatsApp.`;
-  }
-  await say(hdr+body,900);
-  addCTA(stdCTA(waBase+(L==="hi"?" मुझे टेस्ट सीरीज़ के बारे में जानकारी चाहिए।":" I need a Test Series. Please share details."), exam, "tests"));
-}
-
-async function showCombo(hdr,exam,subject,waBase){
-  const feeOC=getFeeOnline(exam);
-  const feeHC=getFeeHardCopy(exam);
-  const body=L==="hi"
-    ?`🎁 <strong>कॉम्बो: ऑनलाइन कोर्स + हार्ड कॉपी नोट्स</strong><hr class="d">
-<div class="row">🎥 ऑनलाइन कोर्स: <span class="pr">${feeOC.price}</span></div>
-<div class="row">📦 हार्ड कॉपी नोट्स: <span class="pr">${feeHC.price}</span></div><br>
-<div class="offer">🎁 <strong>विशेष ऑफर:</strong> दोनों एक साथ लें → हार्ड कॉपी नोट्स पर <strong>₹1,000 तक की छूट!</strong><br><small>WhatsApp पर यह ऑफर बताएं और छूट पाएं।</small></div><br>
-${t("priceNote")}`
-    :`🎁 <strong>Combo: Online Course + Hard Copy Notes</strong><hr class="d">
-<div class="row">🎥 Online Course: <span class="pr">${feeOC.price}</span></div>
-<div class="row">📦 Hard Copy Notes: <span class="pr">${feeHC.price}</span></div><br>
-<div class="offer">🎁 <strong>Special Offer:</strong> Buy both together → get up to <strong>₹1,000 OFF</strong> on Hard Copy Notes!<br><small>Mention this offer on WhatsApp to avail the discount.</small></div><br>
-${t("priceNote")}`;
-  await say(hdr+body,1100);
-  addCTA(stdCTA(waBase+(L==="hi"?" मुझे ऑनलाइन कोर्स + हार्ड कॉपी नोट्स कॉम्बो चाहिए। ₹1,000 छूट ऑफर लागू करें।":" I want the Online Course + Hard Copy Notes Combo. Please apply the ₹1,000 discount offer."), exam, "combo"));
-}
-
-async function showHelp(hdr,exam,subject,waBase){
-  const sub=subject.toLowerCase();
-  const hasOnline=(HAS_ONLINE[exam]||[]).some(k=>sub.includes(k.toLowerCase())||k.toLowerCase().includes(sub.split("/")[0].trim().toLowerCase()));
-  const body=L==="hi"
-    ?`🤔 <strong>कौन सा प्रोडक्ट सही रहेगा?</strong><hr class="d">
-${hasOnline?`✅ <strong>ऑनलाइन कोर्स</strong> — लाइव/रिकॉर्डेड क्लासेज + डाउट सेशन + टेस्ट सीरीज़ चाहिए तो।<br><br>`:""}
-✅ <strong>ई-नोट्स (₹499–999)</strong> — कम बजट में डिजिटल नोट्स, ऐप पर तुरंत एक्सेस।<br><br>
-✅ <strong>हार्ड कॉपी नोट्स</strong> — किताब जैसे पढ़ना पसंद हो, घर पर डिलीवरी।<br><br>
-${hasOnline?`🏆 <strong>सबसे अच्छा:</strong> ऑनलाइन कोर्स + हार्ड कॉपी नोट्स कॉम्बो — और साथ में <strong>₹1,000 तक की छूट!</strong><br><br>`:""}
-<em>हमारे एक्सपर्ट 5 मिनट में सही प्रोडक्ट सुझाएंगे!</em>`
-    :`🤔 <strong>Which product is right for you?</strong><hr class="d">
-${hasOnline?`✅ <strong>Online Course</strong> — if you want live/recorded classes, doubt-clearing and test series.<br><br>`:""}
-✅ <strong>E-Notes (₹499–999)</strong> — budget-friendly digital notes, instant access on app.<br><br>
-✅ <strong>Hard Copy Notes</strong> — if you prefer a printed book delivered to your home.<br><br>
-${hasOnline?`🏆 <strong>Best value:</strong> Online Course + Hard Copy Notes Combo → up to <strong>₹1,000 OFF</strong> on Hard Copy!<br><br>`:""}
-<em>Our expert will guide you to the right product in 5 minutes!</em>`;
-  await say(hdr+body,1000);
-  addCTA(stdCTA(waBase+(L==="hi"?" मुझे सही प्रोडक्ट चुनने में मदद चाहिए।":" I need help choosing the right product. Please guide me."), exam, ""));
-}
-
-// ── FEE HELPERS ──────────────────────────────────────────────────────────────
-function getFeeOnline(exam){
-  if(exam==="ap")    return {price:FEES.ocAP_combo,note:""};
-  if(exam==="pgt")   return {price:FEES.ocPGT_combo,note:""};
-  if(exam==="rpsc1"||exam==="rpsc2") return {price:"₹1,000–2,801",note:""};
-  if(exam==="net")   return {price:"₹3,001",note:"(varies by subject)"};
-  if(exam==="ras")   return {price:FEES.ocRAS_demo,note:""};
-  if(exam==="rssb")  return {price:FEES.ocJVVNL,note:FEES.ocJVVNL_off};
-  return {price:"Contact us",note:""};
-}
-function getFeeENotes(exam){
-  if(exam==="ap")    return {price:FEES.enAP,note:FEES.enAP_off};
-  if(exam==="pgt"||exam==="rpsc1"||exam==="rpsc2") return {price:FEES.enGrade,note:""};
-  if(exam==="net")   return {price:"₹499–999",note:""};
-  if(exam==="ras")   return {price:FEES.enRAS,note:"(49% OFF)"};
-  if(exam==="rssb")  return {price:"₹699",note:"(30% OFF)"};
-  return {price:"₹499–999",note:""};
-}
-function getFeeHardCopy(exam){
-  if(exam==="ap")    return {price:FEES.hcAP,note:FEES.hcAP_off};
-  if(exam==="pgt")   return {price:FEES.hcKVS,note:"(varies by subject)"};
-  if(exam==="rpsc1") return {price:FEES.hcGrade,note:""};
-  if(exam==="rpsc2") return {price:FEES.hcGrade,note:""};
-  if(exam==="net")   return {price:"₹2,200+",note:"(varies by subject)"};
-  if(exam==="ras")   return {price:FEES.hcRAS,note:""};
-  if(exam==="rssb")  return {price:FEES.hcJVVNL,note:FEES.hcJVVNL_off};
-  return {price:"Contact us",note:""};
-}
-
-// ── UTILITY SCREENS ───────────────────────────────────────────────────────────
-async function showWhyZenith(){
-  const body=L==="hi"
-    ?`<strong>🏆 ज़ेनिथ क्यों चुनें?</strong><hr class="d">
-<div class="row">📅 <strong>27 वर्षों का अनुभव</strong> — 1998 से परीक्षा-केंद्रित</div>
-<div class="row">✅ <strong>सत्यापित परिणाम:</strong> 2,300+ NET/SET • 300+ JRF • 500+ RPSC ग्रेड • 200+ असि. प्रोफेसर • 100+ IAS/RAS</div>
-<div class="row">📕 <strong>PYQ-आधारित नोट्स</strong> — पिछले प्रश्नपत्रों से बनाए, पाठ्यपुस्तकों से नहीं</div>
-<div class="row">🌐 <strong>वास्तव में द्विभाषी</strong> — हिंदी और अंग्रेजी में मूल रूप से लिखे गए</div>
-<div class="row">🎓 <strong>विशेषज्ञ फैकल्टी</strong> — RPSC व UGC में सत्यापित चयन रिकॉर्ड</div>
-<div class="row">💰 <strong>उचित मूल्य</strong> — ई-नोट्स ₹499 से • हार्ड कॉपी ₹700 से • EMI सुविधा</div>
-<div class="row">📄 <strong>खरीदने से पहले देखें</strong> — फ्री सैम्पल नोट्स + फ्री डेमो क्लासेज उपलब्ध</div>`
-    :`<strong>🏆 Why Choose Zenith?</strong><hr class="d">
-<div class="row">📅 <strong>27 Years of experience</strong> — focused exam prep since 1998</div>
-<div class="row">✅ <strong>Verified results:</strong> 2,300+ NET/SET • 300+ JRF • 500+ RPSC Grade • 200+ Asst. Prof • 100+ IAS/RAS</div>
-<div class="row">📕 <strong>PYQ-engineered notes</strong> — built from past papers, not textbooks</div>
-<div class="row">🌐 <strong>Truly bilingual</strong> — Hindi & English written natively, not translated</div>
-<div class="row">🎓 <strong>Faculty with verifiable RPSC & UGC records</strong></div>
-<div class="row">💰 <strong>Fair pricing</strong> — E-Notes from ₹499 • Hard Copy from ₹700 • EMI on courses</div>
-<div class="row">📄 <strong>Try before you buy</strong> — Free sample notes + free demo classes</div>`;
-  await say(body,1000);
-  addCTA(`<div class="ctawrap">
-    <a class="cta csm" href="${SAMPLE}" target="_blank" rel="noopener">${t("viewSamp")}</a>
-    <a class="cta cweb" href="${YT}" target="_blank" rel="noopener">▶ ${L==="hi"?"फ्री डेमो क्लासेज":"Free Demo Classes"}</a>
-    <a class="cta cwa" href="${waURL(L==="hi"?"नमस्ते ज़ेनिथ! मुझे आपके कोर्स और नोट्स की जानकारी चाहिए।":"Hi Zenith! I want to know more about your courses.")}" target="_blank" rel="noopener">${t("waOrder")}</a>
-  </div>`);
-  setTimeout(doMore,500);
-}
-
-async function showSample(){
-  await say(L==="hi"
-    ?`<strong>📄 फ्री सैम्पल नोट्स</strong><hr class="d">खरीदने से पहले गुणवत्ता जांचें — सभी विषयों के सैम्पल चैप्टर Google Drive पर। कोई साइन-अप नहीं।`
-    :`<strong>📄 Free Sample Notes</strong><hr class="d">Judge our material before buying — sample chapters for all subjects on Google Drive. No sign-up needed.`,700);
-  addCTA(`<div class="ctawrap"><a class="cta csm" href="${SAMPLE}" target="_blank" rel="noopener">${t("viewSamp")}</a></div>`);
-  setTimeout(doMore,400);
-}
-
-async function showContact(){
-  await say(L==="hi"
-    ?`<strong>📞 हमारी टीम से बात करें</strong><hr class="d">📞 <strong>+91 8302 450 450</strong><br>📞 <strong>+91 9829 607 122</strong><br>📞 <strong>+91 9057 509 017</strong><br>📞 <strong>+91 8010 078 603</strong><br>📧 info.zenithcp@gmail.com`
-    :`<strong>📞 Talk to Our Team</strong><hr class="d">📞 <strong>+91 8302 450 450</strong><br>📞 <strong>+91 9829 607 122</strong><br>📞 <strong>+91 9057 509 017</strong><br>📞 <strong>+91 8010 078 603</strong><br>📧 info.zenithcp@gmail.com`,800);
-  addCTA(`<div class="ctawrap">
-    <a class="cta cwa" href="${waURL(L==="hi"?"नमस्ते ज़ेनिथ! मुझे सही कोर्स/नोट्स चुनने में मदद चाहिए।":"Hi Zenith! I need help choosing the right course/notes.")}" target="_blank" rel="noopener">${t("waOrder")}</a>
-    <a class="cta ccall" href="tel:+918302450450">${t("callUs")}</a>
-  </div>`);
-  setTimeout(doMore,400);
-}
-
-async function doMore(){
-  await say(t("more"),500);
-  addOpts([
-    {l:t("newBtn"), a:()=>askQ2()},
-    {l:t("whyBtn"), a:()=>showWhyZenith()},
-    {l:t("sampleBtn"), a:()=>showSample()},
-    {l:t("expertBtn"), a:()=>showContact()},
-    {l:t("menuBtn"), a:()=>doRestart()},
-  ]);
-}
-
-// ── TEXT INPUT ────────────────────────────────────────
-// ════════════════ TEXT INPUT (restored) ════════════════
-async function sendMsg(){
-  const inp=document.getElementById("inp");
-  const txt=(inp.value||"").trim();
-  if(!txt) return;
-  inp.value="";
-  addMsg("user",txt);
-  if(phase==="lang"){ if(/hin|हिं|हि|हिन/i.test(txt)) await setLang("hi"); else await setLang("en"); return; }
-  if(phase==="name"){ rmOpts(); await gotName(txt); return; }
-  if(phase==="subject"){ rmOpts(); await gotSubject(txt); return; }
-  await say(L==="hi"?"कृपया ऊपर दिए गए बटनों में से चुनें 👆 — या किसी भी समय हमसे संपर्क करें।":"Please tap one of the option buttons above 👆 — or reach us any time.",500);
-}
-function doRestart(){
-  const b=document.getElementById("body");
-  b.innerHTML='<div class="dd">Today</div>';
-  A.name="";A.exam="";A.subject="";A.medium="";A.product="";
-  phase="lang";
-  document.getElementById("stpbar").style.display="none";
-  const inp=document.getElementById("inp"); if(inp) inp.value="";
-  startLang();
-}
-
-// ════════════════ LIVE CATALOG ENGINE ════════════════
+const PHONE="+918302450450";
 const ORG={online:10248,notes:297525};
-const APIBASE="https://api.classplusapp.com/v2/course/preview/similar/";
+const API="https://api.classplusapp.com/v2/course/preview/similar/";
+
+let L="en", phase="lang";
+const A={name:"",leaf:null,typed:"",subject:"",medium:"",product:""};
+
+const SUBJECTS={
+ ap:["Political Science / राजनीति विज्ञान","Public Administration / लोक प्रशासन","History / इतिहास","Geography / भूगोल","Economics / अर्थशास्त्र","Commerce / वाणिज्य","Hindi Literature / हिंदी","English Literature / अंग्रेज़ी","Sanskrit / संस्कृत","Sociology / समाजशास्त्र","Psychology / मनोविज्ञान","Education / शिक्षाशास्त्र","Mathematics / गणित","Physics / भौतिकी","Chemistry / रसायन","Botany / वनस्पति","Zoology / प्राणी","Law / विधि","Computer Science","Physical Education / शारीरिक शिक्षा","Home Science / गृह विज्ञान","Mass Communication","Library Science","HRM / Management","ABST","BADM","EAFM","Other / अन्य विषय"],
+ rpsc1:["Sociology / समाजशास्त्र","History / इतिहास","Geography / भूगोल","Political Science / राजनीति","Public Administration / लोक प्रशासन","English Literature","Hindi Literature / हिंदी","Sanskrit / संस्कृत","Mathematics / गणित","Physics / भौतिकी","Chemistry / रसायन","Biology / जीव विज्ञान","Commerce / वाणिज्य","Economics / अर्थशास्त्र","Home Science / गृह विज्ञान","Physical Education","Education / शिक्षा","Computer Science","Other / अन्य"],
+ rpsc2:["Science / विज्ञान","Social Science / सामाजिक विज्ञान","Hindi / हिंदी","English / अंग्रेज़ी","Mathematics / गणित","Sanskrit / संस्कृत","Other / अन्य"],
+ school:["Geography","Political Science / Civics","Hindi","English Literature","Commerce","History","Mathematics","Biology","Computer Science","Economics","Sociology","Science","Social Science","Physical Education","Home Science","Sanskrit","Physics","Chemistry","Hostel Warden","Librarian","Other / अन्य विषय"],
+ net:["Paper 1 — General / सामान्य","Commerce / वाणिज्य","Economics / अर्थशास्त्र","Political Science / राजनीति","Public Administration / लोक प्रशासन","History / इतिहास","Geography / भूगोल","Sociology / समाजशास्त्र","Psychology / मनोविज्ञान","English Literature","Hindi Literature / हिंदी","Sanskrit / संस्कृत","Education / शिक्षा","HRM / Management","Law / विधि","Library Science","Mass Communication","Home Science","Physical Education","Yoga","Criminology","Computer Science","CSIR — Life Science","CSIR — Chemical Science","CSIR — Physical Science","CSIR — Mathematical Science","Other / अन्य"],
+ ras:["Complete Package (Pre + Mains)","Prelims Only","Mains GS Papers","Public Administration (Optional)","Other / अन्य"],
+ rssb:["JVVNL Junior Accountant","RSSB Computer Instructor","RSSB CET","RPSC PSI","Patwar","Other / अन्य"]
+};
+
+const TREE=[
+ {id:"ap",en:"🎓 Assistant Professor (College / University)",hi:"🎓 सहायक प्राध्यापक (कॉलेज / यूनिवर्सिटी)",children:[
+   {id:"ap_rpsc",en:"RPSC Assistant Professor / RSSB Teaching Associate",hi:"RPSC सहायक प्राध्यापक / RSSB टीचिंग एसोसिएट",subjects:"ap",
+     primaryKW:["RPSC ASSISTANT PROFESSOR","TEACHING ASSOCIATE","RSSB ASSISTANT"],familyKW:["ASSISTANT PROFESSOR"],pen:"RPSC Assistant Professor",phi:"RPSC सहायक प्राध्यापक",famEn:"Assistant Professor",famHi:"सहायक प्राध्यापक"},
+   {id:"ap_other",en:"Other-State Assistant Professor (UPHESC, BPSC, HPSC, GPSC…)",hi:"अन्य राज्य सहायक प्राध्यापक (UPHESC, BPSC, HPSC…)",subjects:"ap",freeText:true,
+     freeEn:"Which state / exam? (e.g., UPHESC, BPSC, HPSC, GPSC, JKPSC)",freeHi:"कौन सा राज्य / परीक्षा? (जैसे UPHESC, BPSC, HPSC, GPSC)",
+     primaryKW:[],familyKW:["ASSISTANT PROFESSOR"],famEn:"Assistant Professor",famHi:"सहायक प्राध्यापक"}
+ ]},
+ {id:"rpscg",en:"🏫 RPSC School Lecturer / Senior Teacher",hi:"🏫 RPSC स्कूल लेक्चरर / वरिष्ठ शिक्षक",children:[
+   {id:"rpsc1",en:"1st Grade — School Lecturer",hi:"प्रथम श्रेणी — स्कूल लेक्चरर",subjects:"rpsc1",
+     primaryKW:["1ST GRADE","FIRST GRADE","SCHOOL LECTURER"],familyKW:["1ST GRADE","FIRST GRADE","RPSC GRADE"],pen:"RPSC 1st Grade",phi:"RPSC प्रथम श्रेणी",famEn:"RPSC 1st Grade",famHi:"RPSC प्रथम श्रेणी"},
+   {id:"rpsc2",en:"2nd Grade — Senior Teacher",hi:"द्वितीय श्रेणी — वरिष्ठ शिक्षक",subjects:"rpsc2",
+     primaryKW:["2ND GRADE","SENIOR TEACHER"],familyKW:["2ND GRADE","SENIOR TEACHER","RPSC GRADE"],pen:"RPSC 2nd Grade",phi:"RPSC द्वितीय श्रेणी",famEn:"RPSC 2nd Grade",famHi:"RPSC द्वितीय श्रेणी"}
+ ]},
+ {id:"school",en:"📚 School Teacher Exams (PGT / TGT / PRT / TET)",hi:"📚 स्कूल शिक्षक परीक्षाएँ (PGT / TGT / PRT / TET)",children:[
+   {id:"kvs",en:"KVS / NVS / EMRS / AWES (Central Schools)",hi:"KVS / NVS / EMRS / AWES (केंद्रीय विद्यालय)",subjects:"school",
+     primaryKW:["KVS","NVS","EMRS","AWES"],familyKW:["PGT","TGT"," TET"," PRT","KVS","NVS","EMRS","AWES","DSSSB"],pen:"KVS / NVS / EMRS / AWES",phi:"KVS / NVS / EMRS / AWES",famEn:"PGT / TGT / TET",famHi:"PGT / TGT / TET"},
+   {id:"sch_state",en:"Other State (UP, MP, HP, JK, Punjab, CG, UK, DSSSB…)",hi:"अन्य राज्य (UP, MP, HP, JK, पंजाब, CG, UK, DSSSB…)",subjects:"school",freeText:true,
+     freeEn:"Which state / exam? (e.g., UP-PGT, MP-TET, DSSSB-TGT, HP-TGT)",freeHi:"कौन सा राज्य / परीक्षा? (जैसे UP-PGT, MP-TET, DSSSB-TGT)",
+     primaryKW:[],familyKW:["PGT","TGT"," TET"," PRT","DSSSB"],famEn:"PGT / TGT / TET",famHi:"PGT / TGT / TET"}
+ ]},
+ {id:"net",en:"🎓 UGC-NET / JRF / CSIR-NET / SET",hi:"🎓 UGC-NET / JRF / CSIR-NET / SET",subjects:"net",
+   primaryKW:["UGC NET","NET JRF","NET/JRF","CSIR","NTA-UGC"," SET "," SLET"],familyKW:["UGC NET","NET JRF","CSIR"],pen:"UGC-NET / JRF",phi:"UGC-NET / JRF",famEn:"UGC-NET / JRF",famHi:"UGC-NET / JRF"},
+ {id:"ras",en:"🏛️ RAS / State PCS",hi:"🏛️ RAS / राज्य PCS",subjects:"ras",
+   primaryKW:["RAS ","RAS-","RAS+","RAS,","RAS(","RAS PRE","RAS MAIN","RAS PRELIM","RAJASTHAN EXAM","STATE PCS"],familyKW:["RAS ","RAJASTHAN EXAM"],pen:"RAS",phi:"RAS",famEn:"RAS",famHi:"RAS"},
+ {id:"rssb",en:"💻 RSSB / JVVNL / CET / PSI / Computer Instructor",hi:"💻 RSSB / JVVNL / CET / PSI / कंप्यूटर प्रशिक्षक",subjects:"rssb",
+   primaryKW:["RSSB","JVVNL","JUNIOR ACCOUNTANT"," CET","CET ","PSI","COMPUTER INSTRUCTOR","PATWAR"],familyKW:["RSSB","JVVNL"," CET"],pen:"RSSB",phi:"RSSB",famEn:"RSSB",famHi:"RSSB"}
+];
+function findLeaf(id){for(const t of TREE){if(t.id===id&&!t.children)return t;if(t.children)for(const c of t.children)if(c.id===id)return c;}return null;}
+
+function now(){return new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});}
+function $b(){return document.getElementById("body");}
+function down(){const b=$b();setTimeout(()=>{b.scrollTop=b.scrollHeight;},40);}
+function addMsg(who,html){const d=document.createElement("div");d.className="msg "+who;const b=document.createElement("div");b.className="bub";
+  b.innerHTML=html+'<div class="tm">'+now()+(who==="user"?" ✓✓":"")+'</div>';d.appendChild(b);$b().appendChild(d);down();}
+function addBot(html){const d=document.createElement("div");d.className="msg bot";d.innerHTML='<div class="bub">'+html+'<div class="tm">'+now()+'</div></div>';$b().appendChild(d);down();setTimeout(down,150);}
+function addOpts(arr){rmOpts();const w=document.createElement("div");w.className="optswrap";w.id="opts";
+  arr.forEach(o=>{const btn=document.createElement("button");btn.type="button";btn.className="obtn"+(o.full?" full":"");
+    btn.innerHTML=o.l+(o.full?'<span class="arr">›</span>':'');
+    btn.addEventListener("click",function(){rmOpts();addMsg("user",o.t||this.textContent.replace(/›$/,'').trim());setTimeout(o.a,280);});
+    w.appendChild(btn);});
+  $b().appendChild(w);down();setTimeout(()=>{const o=document.getElementById("opts");if(o)o.scrollIntoView({behavior:"smooth",block:"end"});},120);}
+function rmOpts(){const o=document.getElementById("opts");if(o)o.remove();}
+function typing(ms){return new Promise(r=>{const d=document.createElement("div");d.className="msg bot";d.id="typ";
+  d.innerHTML='<div class="typ"><span></span><span></span><span></span></div>';$b().appendChild(d);down();setTimeout(()=>{d.remove();r();},ms);});}
+async function say(html,ms){await typing(ms||650);addMsg("bot",html);}
+function waURL(m){return "https://wa.me/"+WA+"?text="+encodeURIComponent(m);}
+function setStep(n){document.getElementById("stpbar").style.display="flex";for(let i=1;i<=5;i++){
+  document.getElementById("s"+i).className="stp "+(i<n?"done":i===n?"active":"pend");if(i<5)document.getElementById("l"+i).className="stpline"+(i<n?" done":"");}}
+
 let _cat={};
-function _tok(org){return btoa(JSON.stringify({tutorId:null,orgId:org,categoryId:null}));}
-async function fetchApp(key){
-  if(_cat[key]) return _cat[key];
-  try{const raw=localStorage.getItem("zcat_"+key);if(raw){const o=JSON.parse(raw);if(Date.now()-o.t<1800000&&o.d&&o.d.length){_cat[key]=o.d;return o.d;}}}catch(e){}
-  const url=APIBASE+_tok(ORG[key])+"?limit=400&offset=0";
-  const r=await fetch(url,{headers:{accept:'application/json'}});
-  const j=await r.json();
-  const d=(j&&j.data&&j.data.coursesData)||[];
-  if(d.length){_cat[key]=d; try{localStorage.setItem("zcat_"+key,JSON.stringify({t:Date.now(),d}));}catch(e){}}
-  return d;
-}
-async function getCatalogs(apps){const out=[];for(const a of apps){try{const d=await fetchApp(a);d.forEach(c=>out.push(Object.assign({_app:a},c)));}catch(e){}}return out;}
-
-const EXKW={
-  ap:["ASSISTANT PROFESSOR"],
-  pgt:["PGT","TGT"," TET"," PRT","KVS","NVS","EMRS"],
-  rpsc1:["1ST GRADE","FIRST GRADE","SCHOOL LECTURER"],
-  rpsc2:["2ND GRADE","SENIOR TEACHER"],
-  net:["UGC NET","NET JRF","NET/JRF","CSIR","NTA-UGC"," SET "," SLET"],
-  ras:["RAS ","RAS-","RAS+","RAS,","RAS(","RAS PRE","RAS MAIN","RAS PRELIM","RAJASTHAN EXAM","STATE PCS"],
-  rssb:["RSSB","JVVNL","JUNIOR ACCOUNTANT"," CET","CET ","P.S.I","PSI","COMPUTER INSTRUCTOR","PATWAR"]
-};
-const PRODKW={
-  enotes:["E-BOOK","E BOOK","E-NOTES","E NOTES","CLASS NOTES","E NOTE","DIGITAL"],
-  hardcopy:["HARD COPY"],
-  tests:["TEST SERIES"]
-};
+function _tok(o){return btoa(JSON.stringify({tutorId:null,orgId:o,categoryId:null}));}
+async function fetchApp(k){
+  if(_cat[k])return _cat[k];
+  try{const r=localStorage.getItem("zc_"+k);if(r){const o=JSON.parse(r);if(Date.now()-o.t<1800000&&o.d&&o.d.length){_cat[k]=o.d;return o.d;}}}catch(e){}
+  const res=await fetch(API+_tok(ORG[k])+"?limit=400&offset=0",{headers:{accept:'application/json'}});
+  const j=await res.json();const d=(j&&j.data&&j.data.coursesData)||[];
+  if(d.length){_cat[k]=d;try{localStorage.setItem("zc_"+k,JSON.stringify({t:Date.now(),d}));}catch(e){}}
+  return d;}
+async function getCat(apps){const out=[];for(const a of apps){try{const d=await fetchApp(a);d.forEach(c=>out.push(Object.assign({_app:a},c)));}catch(e){}}return out;}
 function txtOf(c){return ((c.name||"")+" || "+(c.categories||"")).toUpperCase();}
-function matchExam(c,exam){const T=txtOf(c);return (EXKW[exam]||[]).some(k=>T.includes(k));}
-function subjKey(subject){
-  if(!subject) return "";
-  let s=subject.split("/")[0];
-  s=s.replace(/—.*/,"").replace(/\(.*?\)/g,"").trim();
-  return s.toUpperCase();
+
+const ALIAS={
+ "PUBLIC ADMINISTRATION":["PUBLIC AD","PUBLIC ADM","PUB AD","PUB. AD","LOK PRASHASAN"],
+ "POLITICAL SCIENCE":["POLITICAL SC","POL SC","POL. SC","POL SCIENCE","POLITICS"],
+ "POLITICAL SCIENCE / CIVICS":["POLITICAL SC","POL SC","CIVICS","POLITICS"],
+ "PHYSICAL EDUCATION":["PHYSICAL EDU","PHY EDU","PHY. EDU","PHYSICAL EDUCATION"],
+ "MASS COMMUNICATION":["MASS COMM","JOURNALISM","MASS COMMUNICATION"],
+ "LIBRARY SCIENCE":["LIBRARY SC","LIB SC","LIBRARIAN","LIBRARY SCIENCE"],
+ "HOME SCIENCE":["HOME SC","HOME SCIENCE","GRIH"],
+ "COMPUTER SCIENCE":["COMPUTER SC","COMP SC","COMPUTER SCIENCE","COMPUTER"],
+ "HRM / MANAGEMENT":["HRM","MANAGEMENT","HUMAN RESOURCE","LABOUR WELFARE"],
+ "ENGLISH LITERATURE":["ENGLISH LIT","ENGLISH LITERATURE"],
+ "HINDI LITERATURE":["HINDI LIT","HINDI LITERATURE"],
+ "SOCIAL SCIENCE":["SOCIAL SC","SOCIAL SCIENCE","SST"]
+};
+function subjKey(s){if(!s)return "";let x=s.split("/")[0];x=x.replace(/—.*/,"").replace(/\(.*?\)/g,"").trim();return x.toUpperCase();}
+function isGeneric(k){return !k||/\b(OTHER|COMPLETE|PRELIM|PRELIMS|MAIN|MAINS|PAPER|PACKAGE|GENERAL|ONLY|OPTIONAL)\b/.test(k);}
+function subjMatch(T,subject){
+  const raw=subjKey(subject);if(!raw)return true;
+  const full=subject.split("/")[0].replace(/\(.*?\)/g,"").trim().toUpperCase();
+  if(ALIAS[full])return ALIAS[full].some(a=>T.includes(a));
+  if(ALIAS[raw])return ALIAS[raw].some(a=>T.includes(a));
+  const toks=raw.split(/[^A-Z0-9]+/).filter(w=>w.length>=3&&!["AND","THE","FOR","OPTIONAL"].includes(w));
+  if(toks.length===0){return new RegExp("\\b"+raw.replace(/[^A-Z0-9]/g,"")+"\\b").test(T);}
+  const t0=toks[0];
+  const t0ok=(t0.length<=3)?new RegExp("\\b"+t0+"\\b").test(T):(T.includes(t0)||T.includes(t0.slice(0,4)));
+  if(!t0ok)return false;
+  if(toks.length===1)return true;
+  const t1=toks[1];return T.includes(t1.slice(0,Math.min(3,t1.length)));
 }
-// "whole-exam" / non-specific subject -> show exam-level results rather than require a subject hit
-function isGenericKey(key){ return !key || /\b(OTHER|COMPLETE|PRELIM|PRELIMS|MAIN|MAINS|PAPER|PACKAGE|GENERAL|ONLY)\b/.test(key); }
-// Does a real ONLINE COURSE (not notes/test-series) exist for this exam (+subject)?
-function onlineHasFor(exam,subject){
-  const oc=_cat.online||[];
-  if(oc.length<200) return null; // unknown / incomplete fetch -> show online to be safe
-  const key=subjKey(subject);
-  let pool=oc.filter(c=>matchExam(c,exam) && !txtOf(c).includes("TEST SERIES"));
-  if(!isGenericKey(key)) pool=pool.filter(c=>txtOf(c).includes(key));
-  return pool.length>0;
-}
+
 function priceLine(c){
-  if(c.isFreeCourse||c.finalPrice===0) return '<span class="disc">FREE</span>';
-  const f=(c.finalPrice!=null?c.finalPrice:c.price);
-  const orig=c.price;
-  if(orig&&orig>f){
-    const pct=c.discountPercentage?(' <span class="disc">'+c.discountPercentage+'% OFF</span>'):'';
-    return '<span class="pr">₹'+f+'</span> <span class="op">₹'+orig+'</span>'+pct;
-  }
-  return '<span class="pr">₹'+f+'</span>';
+  if(c.isFreeCourse||c.finalPrice===0)return '<span class="free">FREE</span>';
+  const f=(c.finalPrice!=null?c.finalPrice:c.price),o=c.price;
+  if(o&&o>f){const pct=c.discountPercentage?'<span class="off">'+Math.round(c.discountPercentage)+'% OFF</span>':'';
+    return '<span class="now">₹'+f+'</span><span class="was">₹'+o+'</span>'+pct;}
+  return '<span class="now">₹'+f+'</span>';}
+function medScore(c,m){const T=(c.name||"").toUpperCase();if(m==="Hindi")return T.includes("HINDI")?2:(T.includes("BOTH")?1:0);if(m==="English")return T.includes("ENGLISH")?2:(T.includes("BOTH")?1:0);return T.includes("BOTH")?1:0;}
+function comboScore(c){const T=txtOf(c);return (T.includes("COMBO")?2:0)+(T.includes("MASTER NOTES")?1:0);}
+function rank(arr,m){return arr.slice().sort((a,b)=>{const x=medScore(b,m)-medScore(a,m);if(x)return x;const fa=a.finalPrice!=null?a.finalPrice:a.price,fb=b.finalPrice!=null?b.finalPrice:b.price;return fa-fb;});}
+function card(c){return '<div class="card"><div class="nm">'+(c.name||"Course")+'</div><div class="pr">'+priceLine(c)+'</div>'+
+  '<a class="opencta" href="'+c.shareableLink+'" target="_blank" rel="noopener">'+(L==="hi"?"यह खोलें / खरीदें  →":"Open / Buy this  →")+'</a></div>';}
+
+function prodPass(c,prod){
+  if(prod==="online"||prod==="combo"){if(txtOf(c).includes("TEST SERIES"))return false;return true;}
+  const PK={enotes:["E-BOOK","E BOOK","E-NOTES","E NOTES","CLASS NOTES","E NOTE","DIGITAL"],hardcopy:["HARD COPY"],tests:["TEST SERIES"]};
+  const pk=PK[prod];if(pk)return pk.some(k=>txtOf(c).includes(k));return true;}
+function kwAny(c,arr){const T=txtOf(c);return arr.some(k=>T.includes(k));}
+function dedupe(a){const s={};return a.filter(c=>s[c.id]?false:(s[c.id]=1));}
+function tieredMatch(cat,leaf,subject,prod,medium){
+  const typed=(A.typed||"").toUpperCase().trim();
+  const primary=(leaf.primaryKW||[]).slice();if(typed)primary.push(typed);
+  const family=leaf.familyKW||[];
+  const generic=isGeneric(subjKey(subject));
+  const subjOK=c=>generic||subjMatch(txtOf(c),subject);
+  let t1=dedupe(cat.filter(c=>primary.length&&kwAny(c,primary)&&prodPass(c,prod)&&subjOK(c)));
+  if(t1.length)return {list:rank(t1,medium).slice(0,6),tier:1};
+  let t2=dedupe(cat.filter(c=>kwAny(c,family)&&prodPass(c,prod)&&subjOK(c)));
+  t2.sort((a,b)=>comboScore(b)-comboScore(a)||(medScore(b,medium)-medScore(a,medium)));
+  if(t2.length)return {list:rank(t2,medium).slice(0,6),tier:2};
+  return {list:[],tier:3};
 }
-function medScore(c,medium){
-  const T=(c.name||"").toUpperCase();
-  if(medium==="Hindi") return T.includes("HINDI")?2:(T.includes("BOTH")?1:0);
-  if(medium==="English") return T.includes("ENGLISH")?2:(T.includes("BOTH")?1:0);
-  return T.includes("BOTH")?1:0;
-}
-function matchCourses(pool,exam,subject,prod,medium){
-  let cand=pool.filter(c=>matchExam(c,exam));
-  if(prod==="online"||prod==="combo") cand=cand.filter(c=>!txtOf(c).includes("TEST SERIES"));
-  const pk=PRODKW[prod];
-  if(pk) cand=cand.filter(c=>pk.some(k=>txtOf(c).includes(k)));
-  const seen={}; cand=cand.filter(c=>{if(seen[c.id])return false;seen[c.id]=1;return true;});
-  const key=subjKey(subject), generic=isGenericKey(key);
-  let hits, exact;
-  if(generic){ hits=cand; exact=true; }
-  else { hits=cand.filter(c=>txtOf(c).includes(key)); exact=hits.length>0; if(!exact) hits=[]; } // never show wrong-subject courses
-  hits.sort((a,b)=>{
-    const m=medScore(b,medium)-medScore(a,medium); if(m) return m;
-    const fa=a.finalPrice!=null?a.finalPrice:a.price, fb=b.finalPrice!=null?b.finalPrice:b.price;
-    return fa-fb;
-  });
-  return {list:hits.slice(0,6), exact, total:hits.length, generic};
-}
-function courseCard(c){
-  return '<div class="row" style="padding:8px 0;border-bottom:1px solid #eee">'
-    +'<div style="font-weight:600;color:#075e54;margin-bottom:3px;line-height:1.35">'+(c.name||"Course")+'</div>'
-    +'<div style="margin-bottom:6px">'+priceLine(c)+'</div>'
-    +'<a class="cta ca1" style="padding:7px 12px;font-size:12px" href="'+c.shareableLink+'" target="_blank" rel="noopener">'
-    +(L==="hi"?"यह खोलें / खरीदें →":"Open / Buy this →")+'</a></div>';
-}
-function appsForProd(prod){
-  if(prod==="online"||prod==="combo") return ["online"];
-  if(prod==="enotes"||prod==="hardcopy") return ["notes"];
-  return ["online","notes"];
-}
-function uspBubble(prod){
-  const online=(prod==="online"||prod==="combo");
-  if(L==="hi"){
-    if(online) return '<div class="offer">✨ <strong>ज़ेनिथ ऑनलाइन कोर्स की खूबियाँ:</strong><br>🎥 लाइव + रिकॉर्डेड + हाइब्रिड क्लास<br>👨‍🏫 अनुभवी फैकल्टी — प्रमाणित चयन रिकॉर्ड<br>❓ डाउट-सेशन + PYQ टेस्ट सीरीज़ शामिल<br>📱 मोबाइल / लैपटॉप / PC — कहीं भी देखें<br>💳 EMI सुविधा • 🗓️ 1 वर्ष वैधता<br>🏆 27 वर्ष • 2,300+ NET/SET • 500+ RPSC ग्रेड • 200+ असि. प्रोफेसर</div>';
-    return '<div class="offer">✨ <strong>ज़ेनिथ नोट्स की खूबियाँ:</strong><br>📘 PYQ-आधारित — पिछले प्रश्नपत्रों से बने, रट्टा नहीं<br>🎯 टॉपिक-वाइज़ व पूरी तरह परीक्षा-केंद्रित<br>🌐 हिंदी और अंग्रेजी — दोनों माध्यम<br>🔄 2026 सिलेबस के अनुसार अपडेटेड<br>❓ प्रश्न बैंक / मॉडल प्रश्न शामिल<br>🏆 27 वर्ष • 2,300+ NET/SET • 500+ RPSC ग्रेड</div>';
-  }
-  if(online) return '<div class="offer">✨ <strong>Top features of Zenith Online Courses:</strong><br>🎥 Live + Recorded + Hybrid classes<br>👨‍🏫 Expert faculty with a proven selection record<br>❓ Doubt-clearing + PYQ test series included<br>📱 Watch on mobile / laptop / PC — anywhere<br>💳 EMI available • 🗓️ 1-year validity<br>🏆 27 yrs • 2,300+ NET/SET • 500+ RPSC Grade • 200+ Asst. Prof</div>';
-  return '<div class="offer">✨ <strong>Top features of Zenith Notes:</strong><br>📘 PYQ-engineered — built from past papers, not rote text<br>🎯 Topic-wise & fully exam-oriented<br>🌐 Available in both Hindi & English<br>🔄 Updated for the 2026 syllabus<br>❓ Question bank / model questions included<br>🏆 27 yrs • 2,300+ NET/SET • 500+ RPSC Grade</div>';
-}
-function browseBubble(apps,waMsg){
+function appsFor(prod){if(prod==="online"||prod==="combo")return ["online"];if(prod==="enotes"||prod==="hardcopy")return ["notes"];return ["online","notes"];}
+function onlineHasFor(leaf,subject){
+  const oc=_cat.online||[];if(oc.length<200)return null;
+  const typed=(A.typed||"").toUpperCase().trim();
+  const kws=(leaf.primaryKW||[]).concat(leaf.familyKW||[]);if(typed)kws.push(typed);
+  const generic=isGeneric(subjKey(subject));
+  let pool=oc.filter(c=>kwAny(c,kws)&&!txtOf(c).includes("TEST SERIES"));
+  if(!generic)pool=pool.filter(c=>subjMatch(txtOf(c),subject));
+  return pool.length>0;}
+
+function usp(prod){const online=(prod==="online"||prod==="combo");
+  if(L==="hi")return online
+    ?'<div class="offer">✨ <b>ज़ेनिथ ऑनलाइन कोर्स की खूबियाँ</b><br>🎥 लाइव + रिकॉर्डेड + हाइब्रिड • 👨‍🏫 अनुभवी फैकल्टी (प्रमाणित चयन)<br>❓ डाउट-सेशन + PYQ टेस्ट सीरीज़ • 📱 किसी भी डिवाइस पर<br>💳 EMI सुविधा • 🗓️ 1 वर्ष वैधता</div>'
+    :'<div class="offer">✨ <b>ज़ेनिथ नोट्स की खूबियाँ</b><br>📘 PYQ-आधारित (पिछले प्रश्नपत्रों से) • 🎯 टॉपिक-वाइज़, परीक्षा-केंद्रित<br>🌐 हिंदी और अंग्रेज़ी दोनों • 🔄 2026 सिलेबस अपडेटेड • ❓ प्रश्न बैंक शामिल</div>';
+  return online
+    ?'<div class="offer">✨ <b>Top features — Zenith Online Courses</b><br>🎥 Live + Recorded + Hybrid • 👨‍🏫 Expert faculty, proven selections<br>❓ Doubt-clearing + PYQ test series • 📱 Any device • 💳 EMI • 🗓️ 1-yr validity</div>'
+    :'<div class="offer">✨ <b>Top features — Zenith Notes</b><br>📘 PYQ-engineered (from past papers) • 🎯 Topic-wise & exam-oriented<br>🌐 Hindi & English both • 🔄 Updated for 2026 syllabus • ❓ Question bank included</div>';}
+function contactBubble(waMsg,apps,withCall){
   let h='<div class="ctawrap">';
-  h+='<a class="cta cwa" href="'+waURL(waMsg)+'" target="_blank" rel="noopener">'+t("waOrder")+'</a>';
-  if(apps.indexOf("online")>=0) h+='<a class="cta ca1" href="'+ONLINE_URL+'/courses" target="_blank" rel="noopener">'+(L==="hi"?"🎥 सभी ऑनलाइन कोर्स देखें":"🎥 Browse ALL Online Courses")+'</a>';
-  if(apps.indexOf("notes")>=0) h+='<a class="cta ca2" href="'+NOTES_URL+'/courses" target="_blank" rel="noopener">'+(L==="hi"?"📗 सभी नोट्स/बुक्स देखें":"📗 Browse ALL Notes & Books")+'</a>';
-  h+='<a class="cta csm" href="'+SAMPLE+'" target="_blank" rel="noopener">'+t("viewSamp")+'</a>';
-  h+='</div>';
-  return h;
-}
+  h+='<a class="cta cwa" href="'+waURL(waMsg)+'" target="_blank" rel="noopener">💬 '+(L==="hi"?"WhatsApp पर ऑर्डर / पूछताछ":"WhatsApp us to Order / Enquire")+'</a>';
+  if(withCall)h+='<a class="cta ccall" href="tel:'+PHONE+'">📞 '+(L==="hi"?"कॉल करें +91 8302 450 450":"Call +91 8302 450 450")+'</a>';
+  if(apps.indexOf("online")>=0)h+='<a class="cta con" href="'+ONLINE_URL+'/courses" target="_blank" rel="noopener">🎥 '+(L==="hi"?"सभी ऑनलाइन कोर्स देखें":"Browse ALL Online Courses")+'</a>';
+  if(apps.indexOf("notes")>=0)h+='<a class="cta cnotes" href="'+NOTES_URL+'/courses" target="_blank" rel="noopener">📗 '+(L==="hi"?"सभी नोट्स/बुक्स देखें":"Browse ALL Notes & Books")+'</a>';
+  h+='<a class="cta csm" href="'+SAMPLE+'" target="_blank" rel="noopener">📄 '+(L==="hi"?"फ्री सैम्पल नोट्स":"Free Sample Notes")+'</a>';
+  h+='</div>';return h;}
 
-// Q5 — only offer Online / Combo if a real online course exists for this exam+subject
-async function askQ5(){
-  phase="product";setStep(5);
-  await say(t("q5"),600);
-  let showOnline=true;
-  try{ await fetchApp("online"); const has=onlineHasFor(A.exam,A.subject); showOnline=(has!==false); }catch(e){ showOnline=true; }
-  const btns=[];
-  if(showOnline) btns.push({l:t("p1"),full:true,a:()=>doSuggest("online")});
-  btns.push({l:t("p2"),full:true,a:()=>doSuggest("enotes")});
-  btns.push({l:t("p3"),full:true,a:()=>doSuggest("hardcopy")});
-  btns.push({l:t("p4"),full:true,a:()=>doSuggest("tests")});
-  if(showOnline) btns.push({l:t("p5"),full:true,a:()=>doSuggest("combo")});
-  btns.push({l:t("pX"),full:true,a:()=>doSuggest("help")});
-  addOpts(btns);
-}
+async function startLang(){phase="lang";document.getElementById("stpbar").style.display="none";
+  await say(L==="hi"?"🙏 <strong>ज़ेनिथ एजुकेशन, जयपुर</strong> में स्वागत है!<br><br>जारी रखने के लिए भाषा चुनें:":"🙏 Welcome to <strong>Zenith Education, Jaipur</strong>!<br><br>Please choose your language to continue:",900);
+  addOpts([{l:"🇮🇳 हिंदी में जारी रखें",a:()=>setLang("hi")},{l:"🇬🇧 Continue in English",a:()=>setLang("en")}]);}
+async function setLang(l){L=l;
+  document.getElementById("hT").textContent=l==="hi"?"ज़ेनिथ एजुकेशन सलाहकार":"Zenith Education Advisor";
+  document.getElementById("hS").textContent=l==="hi"?"ऑनलाइन":"Online";
+  document.getElementById("hE").textContent=l==="hi"?"जयपुर · स्था. 1998":"Jaipur · Est. 1998";
+  document.getElementById("inp").placeholder=l==="hi"?"अपना उत्तर लिखें…":"Type your answer…";
+  await say(l==="hi"?"बढ़िया! मैं आपको <b>सही कोर्स या नोट्स</b> खोजने में मदद करूँगा — बस कुछ सवाल। 😊":"Great! I'll help you find the <b>right course or notes</b> — just a few quick questions. 😊",800);
+  await askName();}
+async function askName(){phase="name";setStep(1);await say(L==="hi"?"<b>आपका नाम?</b>":"<b>Your name?</b>",550);}
+async function gotName(n){A.name=(n||"Friend").trim();
+  await say((L==="hi"?"नमस्ते <strong>"+A.name+"</strong>! 👋":"Nice to meet you, <strong>"+A.name+"</strong>! 👋"),550);await askExamTop();}
+async function askExamTop(){phase="examTop";setStep(2);await say(L==="hi"?"<b>आप किस परीक्षा की तैयारी कर रहे हैं?</b>":"<b>Which exam are you preparing for?</b>",650);
+  addOpts(TREE.map(t=>({l:L==="hi"?t.hi:t.en,full:true,a:()=>pickTop(t.id)})));}
+async function pickTop(id){const t=TREE.find(x=>x.id===id);
+  if(t.children){await say(L==="hi"?"कृपया अपनी श्रेणी चुनें:":"Please choose your category:",450);
+    addOpts(t.children.map(c=>({l:L==="hi"?c.hi:c.en,full:true,a:()=>pickLeaf(c.id)})));return;}
+  pickLeaf(id);}
+async function pickLeaf(id){A.leaf=findLeaf(id);A.typed="";
+  if(A.leaf.freeText){phase="typed";await say((L==="hi"?A.leaf.freeHi:A.leaf.freeEn),600);return;}
+  await askSubject();}
+async function gotTyped(v){A.typed=v.trim();
+  await say((L==="hi"?"समझ गया — <strong>"+A.typed+"</strong> के लिए खोजेंगे।":"Got it — searching for <strong>"+A.typed+"</strong>."),500);
+  await askSubject();}
+async function askSubject(){phase="subject";setStep(3);
+  const subs=SUBJECTS[A.leaf.subjects]||[];
+  await say(L==="hi"?"<b>कौन सा विषय?</b> <span style='font-size:11px;color:#888'>(या नीचे टाइप करें)</span>":"<b>Which subject?</b> <span style='font-size:11px;color:#888'>(or type it below)</span>",600);
+  addOpts(subs.map(s=>({l:s,full:true,a:()=>gotSubject(s)})));}
+async function gotSubject(s){A.subject=s;await askMedium();}
+async function askMedium(){phase="medium";setStep(4);await say(L==="hi"?"<b>कौन सा माध्यम?</b>":"<b>Which medium?</b>",500);
+  addOpts([{l:L==="hi"?"🇮🇳 हिंदी माध्यम":"🇮🇳 Hindi Medium",a:()=>gotMedium("Hindi")},{l:L==="hi"?"🇬🇧 अंग्रेज़ी माध्यम":"🇬🇧 English Medium",a:()=>gotMedium("English")},{l:L==="hi"?"🔀 दोनों / कोई भी":"🔀 Both / Either",a:()=>gotMedium("Both")}]);}
+async function gotMedium(m){A.medium=m;await askProduct();}
+async function askProduct(){phase="product";setStep(5);await say(L==="hi"?"<b>आप क्या लेना चाहेंगे?</b>":"<b>What would you like?</b>",550);
+  let showOnline=true;try{await fetchApp("online");const h=onlineHasFor(A.leaf,A.subject);showOnline=(h!==false);}catch(e){showOnline=true;}
+  const b=[];
+  if(showOnline)b.push({l:L==="hi"?"🎥 ऑनलाइन कोर्स (लाइव/रिकॉर्डेड/हाइब्रिड)":"🎥 Online Course (Live / Recorded / Hybrid)",full:true,a:()=>suggest("online")});
+  b.push({l:L==="hi"?"📱 ई-नोट्स (डिजिटल, ऐप में)":"📱 E-Notes (digital, in app)",full:true,a:()=>suggest("enotes")});
+  b.push({l:L==="hi"?"📦 हार्ड कॉपी नोट्स (घर पर डिलीवरी)":"📦 Hard Copy Notes (home delivery)",full:true,a:()=>suggest("hardcopy")});
+  b.push({l:L==="hi"?"📝 टेस्ट सीरीज़":"📝 Test Series",full:true,a:()=>suggest("tests")});
+  if(showOnline)b.push({l:L==="hi"?"🎁 कॉम्बो: कोर्स + हार्ड कॉपी नोट्स":"🎁 Combo: Course + Hard Copy Notes",full:true,a:()=>suggest("combo")});
+  b.push({l:L==="hi"?"🤔 समझ नहीं आया — मदद करें":"🤔 Not sure — help me choose",full:true,a:()=>suggest("help")});
+  addOpts(b);}
 
-async function doSuggest(prod){
-  A.product=prod;
-  const {name,exam,subject,medium}=A;
-  const examLabel=((L==="hi"?EXAMS_HI:EXAMS_EN).find(e=>e.id===exam)||{}).l||exam;
-  const examClean=examLabel.replace(/[🏛️📚🏫🎓💻]/g,"").trim();
-  const medStr={Hindi:L==="hi"?"हिंदी माध्यम":"Hindi Medium",English:L==="hi"?"अंग्रेजी माध्यम":"English Medium",Both:L==="hi"?"दोनों माध्यम":"Both Mediums"}[medium]||medium;
-  const subjShort=(subject||"").split("/")[0].trim();
+async function suggest(prod){A.product=prod;
+  const leaf=A.leaf, subjShort=(A.subject||"").split("/")[0].trim();
+  const examName=A.typed?A.typed:(L==="hi"?(leaf.phi||leaf.famHi):(leaf.pen||leaf.famEn));
+  const medStr={Hindi:L==="hi"?"हिंदी माध्यम":"Hindi Medium",English:L==="hi"?"अंग्रेज़ी माध्यम":"English Medium",Both:L==="hi"?"दोनों माध्यम":"Both Mediums"}[A.medium]||A.medium;
   const waMsg=(L==="hi"
-    ?"नमस्ते ज़ेनिथ! मेरा नाम "+name+" है। मैं "+examClean+" — "+subject+" ("+medStr+") की तैयारी कर रहा/रही हूं।"
-    :"Hi Zenith! My name is "+name+". Preparing for "+examClean+" — "+subject+" ("+medStr+").");
-  const header=(L==="hi"
-    ?"<strong>"+name+"</strong> जी, आपके लिए: <span class=\"badge\">"+subjShort+"</span><span class=\"badge\">"+medStr+"</span>"
-    :"<strong>For "+name+":</strong> <span class=\"badge\">"+subjShort+"</span><span class=\"badge\">"+medStr+"</span>");
-  await say(header,500);
-  await say(L==="hi"?"मैं हमारे ऐप से आपके लिए सही कोर्स खोज रहा हूं… 🔎":"Finding the exact matches from our live catalogue… 🔎",700);
+    ?"नमस्ते ज़ेनिथ! मेरा नाम "+A.name+" है। मैं "+examName+" — "+subjShort+" ("+medStr+") की तैयारी कर रहा/रही हूँ। कृपया सही कोर्स/नोट्स बताएँ।"
+    :"Hi Zenith! I'm "+A.name+". Preparing for "+examName+" — "+subjShort+" ("+medStr+"). Please guide me to the right course/notes.");
+  await say((L==="hi"?"<strong>"+A.name+"</strong> जी, आपके लिए:":"<strong>For "+A.name+":</strong>")+' <span class="badge">'+examName+'</span><span class="badge">'+subjShort+'</span><span class="badge">'+medStr+'</span>',500);
+  await say(L==="hi"?"मैं हमारी लाइव सूची से आपके लिए सही विकल्प खोज रहा हूँ… 🔎":"Searching our live catalogue for your exact match… 🔎",750);
 
-  const apps=appsForProd(prod);
-  let cat=[];
-  try{ cat=await getCatalogs(apps); }catch(e){ cat=[]; }
-
+  const apps=appsFor(prod);
+  let cat=[];try{cat=await getCat(apps);}catch(e){cat=[];}
   if(!cat.length){
-    await say(L==="hi"
-      ?"अभी लाइव सूची लोड नहीं हो पाई। कृपया नीचे दिए लिंक से सीधे ऐप देखें या WhatsApp करें — हम तुरंत सही कोर्स भेज देंगे। 🙏"
-      :"Couldn't load the live list right now. Please use the links below to open the app directly, or WhatsApp us — we'll send the exact course in minutes. 🙏",700);
-    addCTA(browseBubble(apps,waMsg));
-    setTimeout(doMore,500); return;
-  }
+    await say(L==="hi"?"अभी लाइव सूची लोड नहीं हो पाई। कृपया नीचे से सीधे ऐप देखें या हमसे संपर्क करें। 🙏":"Couldn't load the live list right now. Please use the buttons below or contact us. 🙏",650);
+    addBot(contactBubble(waMsg,apps,true));setTimeout(more,500);return;}
 
-  const res=matchCourses(cat,exam,subject,prod,medium);
-
-  if(res.list.length){
-    const intro = res.generic
-      ? (L==="hi"?"✅ ये रहे "+examClean+" के लिए विकल्प — सीधे खोलकर देखें/खरीदें:":"✅ Here are the options for "+examClean+" — open or buy directly:")
-      : (L==="hi"?"✅ ये रहे आपके "+subjShort+" के सटीक विकल्प — सीधे खोलें/खरीदें:":"✅ Exact matches for "+subjShort+" — open or buy directly:");
-    let html=intro+'<hr class="d">'+res.list.map(courseCard).join("");
-    if(res.total>res.list.length) html+='<div style="font-size:11px;color:#666;margin-top:6px">'+(L==="hi"?"और भी विकल्प उपलब्ध हैं — नीचे 'सभी कोर्स' देखें।":"More options available — see 'Browse all' below.")+'</div>';
-    addCTA(html);
-    if(prod==="combo") addCTA('<div class="offer">'+t("offerBox")+'</div>');
-    addCTA(uspBubble(prod));
+  const r=tieredMatch(cat,leaf,A.subject,prod,A.medium);
+  if(r.tier===1){
+    addBot((L==="hi"?"✅ ये रहे आपके सटीक विकल्प — सीधे खोलें/खरीदें:":"✅ Your exact matches — open or buy directly:")+r.list.map(card).join(""));
+    if(prod==="combo")addBot('<div class="offer">🎁 '+(L==="hi"?"<b>विशेष ऑफर:</b> कोर्स + हार्ड कॉपी नोट्स एक साथ लें → हार्ड कॉपी पर <b>₹1,000 तक की छूट!</b> WhatsApp पर ऑफर बताएँ।":"<b>Special offer:</b> Course + Hard Copy Notes together → up to <b>₹1,000 OFF</b> on Hard Copy! Mention this on WhatsApp.")+'</div>');
+    addBot(usp(prod));addBot(contactBubble(waMsg,apps,false));
+  } else if(r.tier===2){
+    await say((L==="hi"
+      ?"हमारे पास अभी <strong>"+examName+"</strong> के लिए अलग पैकेज नहीं है — पर ये <strong>"+leaf.famHi+"</strong> विकल्प आपके विषय को पूरी तरह कवर करते हैं:"
+      :"We don't have a dedicated <strong>"+examName+"</strong> package — but these <strong>"+leaf.famEn+"</strong> options fully cover your subject:"),700);
+    addBot(r.list.map(card).join(""));
+    addBot(usp(prod));addBot(contactBubble(waMsg,apps,false));
   } else {
-    await say(L==="hi"
-      ?"फ़िलहाल <strong>"+subjShort+"</strong> ("+examClean+") के लिए इस फ़ॉर्मेट में अलग पैकेज सूचीबद्ध नहीं है। कृपया नीचे 'सभी कोर्स' में अपना विषय खोजें या WhatsApp करें — हम सही विकल्प तुरंत बता देंगे। 🙏"
-      :"We don't have a dedicated <strong>"+subjShort+"</strong> package for "+examClean+" in this format yet. Please search your subject under 'Browse all' below, or WhatsApp us — we'll confirm the right option right away. 🙏",700);
+    await say((L==="hi"
+      ?"फ़िलहाल <strong>"+subjShort+"</strong> ("+examName+") के लिए इस फ़ॉर्मेट में पैकेज तैयार नहीं है। 🙏<br>कृपया WhatsApp या कॉल करें — हम <b>आगामी प्लान</b> की जानकारी देंगे और सबसे अच्छा विकल्प सुझाएँगे।"
+      :"We don't have a <strong>"+subjShort+"</strong> ("+examName+") package in this format yet. 🙏<br>Please WhatsApp or call us — we'll share <b>upcoming plans</b> and suggest the best option for you."),750);
+    addBot(contactBubble(waMsg,apps,true));
   }
-  addCTA(browseBubble(apps,waMsg));
-  setTimeout(doMore,600);
-}
+  setTimeout(more,650);}
 
-// ── BOOT ──────────────────────────────────────────────
+async function more(){await say(L==="hi"?"और कुछ मदद करूँ? 😊":"Anything else I can help with? 😊",450);
+  addOpts([
+    {l:L==="hi"?"🔄 नई खोज":"🔄 New Search",a:()=>askExamTop()},
+    {l:L==="hi"?"🏆 ज़ेनिथ क्यों?":"🏆 Why Zenith?",a:()=>whyZenith()},
+    {l:L==="hi"?"📞 एक्सपर्ट से बात करें":"📞 Talk to Expert",a:()=>contactExpert()},
+    {l:L==="hi"?"🏠 मुख्य मेनू":"🏠 Main Menu",a:()=>doRestart()}
+  ]);}
+async function whyZenith(){await say((L==="hi"
+  ?"<strong>🏆 ज़ेनिथ क्यों चुनें?</strong><hr class='d'>📅 27 वर्षों का अनुभव (1998 से)<br>✅ 2,300+ NET/SET • 300+ JRF • 500+ RPSC ग्रेड • 200+ असि. प्रोफेसर<br>📕 PYQ-आधारित नोट्स • 🌐 द्विभाषी • 🎓 विशेषज्ञ फैकल्टी<br>💰 उचित मूल्य • EMI • 📄 खरीदने से पहले फ्री सैम्पल"
+  :"<strong>🏆 Why choose Zenith?</strong><hr class='d'>📅 27 years of experience (since 1998)<br>✅ 2,300+ NET/SET • 300+ JRF • 500+ RPSC Grade • 200+ Asst. Prof<br>📕 PYQ-engineered notes • 🌐 Truly bilingual • 🎓 Expert faculty<br>💰 Fair pricing • EMI • 📄 Free samples before you buy"),900);
+  addBot('<div class="ctawrap"><a class="cta csm" href="'+SAMPLE+'" target="_blank" rel="noopener">📄 '+(L==="hi"?"फ्री सैम्पल नोट्स":"Free Sample Notes")+'</a><a class="cta cwa" href="'+waURL(L==="hi"?"नमस्ते ज़ेनिथ! मुझे कोर्स/नोट्स की जानकारी चाहिए।":"Hi Zenith! I'd like to know more about your courses.")+'" target="_blank" rel="noopener">💬 WhatsApp</a></div>');
+  setTimeout(more,500);}
+async function contactExpert(){await say((L==="hi"
+  ?"<strong>📞 हमारी टीम से बात करें</strong><hr class='d'>📞 +91 8302 450 450<br>📞 +91 9829 607 122<br>📧 info.zenithcp@gmail.com"
+  :"<strong>📞 Talk to our team</strong><hr class='d'>📞 +91 8302 450 450<br>📞 +91 9829 607 122<br>📧 info.zenithcp@gmail.com"),700);
+  addBot('<div class="ctawrap"><a class="cta cwa" href="'+waURL(L==="hi"?"नमस्ते ज़ेनिथ! मुझे सही कोर्स/नोट्स चुनने में मदद चाहिए।":"Hi Zenith! I need help choosing the right course/notes.")+'" target="_blank" rel="noopener">💬 WhatsApp us</a><a class="cta ccall" href="tel:'+PHONE+'">📞 '+(L==="hi"?"कॉल करें":"Call now")+'</a></div>');
+  setTimeout(more,500);}
+
+async function sendMsg(){const inp=document.getElementById("inp");const txt=(inp.value||"").trim();if(!txt)return;inp.value="";addMsg("user",txt);
+  if(phase==="lang"){if(/hin|हि/i.test(txt))await setLang("hi");else await setLang("en");return;}
+  if(phase==="name"){rmOpts();await gotName(txt);return;}
+  if(phase==="typed"){rmOpts();await gotTyped(txt);return;}
+  if(phase==="subject"){rmOpts();await gotSubject(txt);return;}
+  await say(L==="hi"?"कृपया ऊपर दिए विकल्पों में से चुनें 👆 या किसी भी समय हमसे संपर्क करें।":"Please tap an option above 👆 or reach us any time.",500);}
+function doRestart(){const b=document.getElementById("body");b.innerHTML='<div class="dd">Today</div>';
+  A.name="";A.leaf=null;A.typed="";A.subject="";A.medium="";A.product="";phase="lang";
+  document.getElementById("stpbar").style.display="none";const i=document.getElementById("inp");if(i)i.value="";startLang();}
+
 startLang();
 </script>
-</body>
-</html>
+</bo
