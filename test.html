@@ -738,7 +738,7 @@ function doRestart(){
   startLang();
 }
 
-// ════════════════ LIVE CATALOG ENGINE (overrides) ════════════════
+// ════════════════ LIVE CATALOG ENGINE ════════════════
 const ORG={online:10248,notes:297525};
 const APIBASE="https://api.classplusapp.com/v2/course/preview/similar/";
 let _cat={};
@@ -777,6 +777,15 @@ function subjKey(subject){
   s=s.replace(/—.*/,"").replace(/\(.*?\)/g,"").trim();
   return s.toUpperCase();
 }
+// Does an ONLINE course exist for this exam (+subject)? Used to decide whether to offer it.
+function onlineHasFor(exam,subject){
+  const oc=_cat.online||[];
+  if(oc.length<200) return null; // unknown / incomplete fetch -> show online to be safe
+  const key=subjKey(subject);
+  let pool=oc.filter(c=>matchExam(c,exam) && !txtOf(c).includes("TEST SERIES"));
+  if(key) pool=pool.filter(c=>txtOf(c).includes(key));
+  return pool.length>0;
+}
 function priceLine(c){
   if(c.isFreeCourse||c.finalPrice===0) return '<span class="disc">FREE</span>';
   const f=(c.finalPrice!=null?c.finalPrice:c.price);
@@ -795,9 +804,9 @@ function medScore(c,medium){
 }
 function matchCourses(pool,exam,subject,prod,medium){
   let cand=pool.filter(c=>matchExam(c,exam));
+  if(prod==="online"||prod==="combo") cand=cand.filter(c=>!txtOf(c).includes("TEST SERIES"));
   const pk=PRODKW[prod];
   if(pk) cand=cand.filter(c=>pk.some(k=>txtOf(c).includes(k)));
-  // de-dupe by id
   const seen={}; cand=cand.filter(c=>{if(seen[c.id])return false;seen[c.id]=1;return true;});
   const key=subjKey(subject);
   let hits = key? cand.filter(c=>txtOf(c).includes(key)) : cand;
@@ -820,7 +829,17 @@ function courseCard(c){
 function appsForProd(prod){
   if(prod==="online"||prod==="combo") return ["online"];
   if(prod==="enotes"||prod==="hardcopy") return ["notes"];
-  return ["online","notes"]; // tests, help
+  return ["online","notes"];
+}
+// USP / top features to convince the student
+function uspBubble(prod){
+  const online=(prod==="online"||prod==="combo");
+  if(L==="hi"){
+    if(online) return '<div class="offer">✨ <strong>ज़ेनिथ ऑनलाइन कोर्स की खूबियाँ:</strong><br>🎥 लाइव + रिकॉर्डेड + हाइब्रिड क्लास<br>👨‍🏫 अनुभवी फैकल्टी — प्रमाणित चयन रिकॉर्ड<br>❓ डाउट-सेशन + PYQ टेस्ट सीरीज़ शामिल<br>📱 मोबाइल / लैपटॉप / PC — कहीं भी देखें<br>💳 EMI सुविधा • 🗓️ 1 वर्ष वैधता<br>🏆 27 वर्ष • 2,300+ NET/SET • 500+ RPSC ग्रेड • 200+ असि. प्रोफेसर</div>';
+    return '<div class="offer">✨ <strong>ज़ेनिथ नोट्स की खूबियाँ:</strong><br>📘 PYQ-आधारित — पिछले प्रश्नपत्रों से बने, रट्टा नहीं<br>🎯 टॉपिक-वाइज़ व पूरी तरह परीक्षा-केंद्रित<br>🌐 हिंदी और अंग्रेजी — दोनों माध्यम<br>🔄 2026 सिलेबस के अनुसार अपडेटेड<br>❓ प्रश्न बैंक / मॉडल प्रश्न शामिल<br>🏆 27 वर्ष • 2,300+ NET/SET • 500+ RPSC ग्रेड</div>';
+  }
+  if(online) return '<div class="offer">✨ <strong>Top features of Zenith Online Courses:</strong><br>🎥 Live + Recorded + Hybrid classes<br>👨‍🏫 Expert faculty with a proven selection record<br>❓ Doubt-clearing + PYQ test series included<br>📱 Watch on mobile / laptop / PC — anywhere<br>💳 EMI available • 🗓️ 1-year validity<br>🏆 27 yrs • 2,300+ NET/SET • 500+ RPSC Grade • 200+ Asst. Prof</div>';
+  return '<div class="offer">✨ <strong>Top features of Zenith Notes:</strong><br>📘 PYQ-engineered — built from past papers, not rote text<br>🎯 Topic-wise & fully exam-oriented<br>🌐 Available in both Hindi & English<br>🔄 Updated for the 2026 syllabus<br>❓ Question bank / model questions included<br>🏆 27 yrs • 2,300+ NET/SET • 500+ RPSC Grade</div>';
 }
 function browseBubble(apps,waMsg){
   let h='<div class="ctawrap">';
@@ -832,21 +851,22 @@ function browseBubble(apps,waMsg){
   return h;
 }
 
-// Override Q5 so Online + Combo are always offered (live engine handles availability)
+// Q5 — only offer Online / Combo if an online course actually exists for this exam+subject
 async function askQ5(){
   phase="product";setStep(5);
   await say(t("q5"),600);
-  addOpts([
-    {l:t("p1"),full:true,a:()=>doSuggest("online")},
-    {l:t("p2"),full:true,a:()=>doSuggest("enotes")},
-    {l:t("p3"),full:true,a:()=>doSuggest("hardcopy")},
-    {l:t("p4"),full:true,a:()=>doSuggest("tests")},
-    {l:t("p5"),full:true,a:()=>doSuggest("combo")},
-    {l:t("pX"),full:true,a:()=>doSuggest("help")},
-  ]);
+  let showOnline=true;
+  try{ await fetchApp("online"); const has=onlineHasFor(A.exam,A.subject); showOnline=(has!==false); }catch(e){ showOnline=true; }
+  const btns=[];
+  if(showOnline) btns.push({l:t("p1"),full:true,a:()=>doSuggest("online")});
+  btns.push({l:t("p2"),full:true,a:()=>doSuggest("enotes")});
+  btns.push({l:t("p3"),full:true,a:()=>doSuggest("hardcopy")});
+  btns.push({l:t("p4"),full:true,a:()=>doSuggest("tests")});
+  if(showOnline) btns.push({l:t("p5"),full:true,a:()=>doSuggest("combo")});
+  btns.push({l:t("pX"),full:true,a:()=>doSuggest("help")});
+  addOpts(btns);
 }
 
-// Override doSuggest: live exact-course matching with real prices + direct links
 async function doSuggest(prod){
   A.product=prod;
   const {name,exam,subject,medium}=A;
@@ -875,7 +895,6 @@ async function doSuggest(prod){
     setTimeout(doMore,500); return;
   }
 
-  // combo: show online courses (combos live there) + note about hardcopy
   const res=matchCourses(cat,exam,subject,prod,medium);
 
   if(res.list.length){
@@ -885,14 +904,13 @@ async function doSuggest(prod){
     let html=intro+'<hr class="d">'+res.list.map(courseCard).join("");
     if(res.total>res.list.length) html+='<div style="font-size:11px;color:#666;margin-top:6px">'+(L==="hi"?"और भी विकल्प उपलब्ध हैं — नीचे 'सभी कोर्स' देखें।":"More options available — see 'Browse all' below.")+'</div>';
     addCTA(html);
-    if(prod==="combo"){
-      addCTA('<div class="offer">'+t("offerBox")+'</div>');
-    }
+    if(prod==="combo") addCTA('<div class="offer">'+t("offerBox")+'</div>');
   } else {
     await say(L==="hi"
       ?"इस संयोजन के लिए सीधा कोर्स अभी सूचीबद्ध नहीं दिखा — कृपया नीचे 'सभी कोर्स' खोलें या WhatsApp करें, हम सही कोर्स तुरंत बताएंगे।"
       :"No direct course listed for this exact combination — please open 'Browse all' below or WhatsApp us and we'll point you to the right one right away.",700);
   }
+  addCTA(uspBubble(prod));
   addCTA(browseBubble(apps,waMsg));
   setTimeout(doMore,600);
 }
