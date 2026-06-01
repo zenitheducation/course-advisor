@@ -777,13 +777,15 @@ function subjKey(subject){
   s=s.replace(/—.*/,"").replace(/\(.*?\)/g,"").trim();
   return s.toUpperCase();
 }
-// Does an ONLINE course exist for this exam (+subject)? Used to decide whether to offer it.
+// "whole-exam" / non-specific subject -> show exam-level results rather than require a subject hit
+function isGenericKey(key){ return !key || /\b(OTHER|COMPLETE|PRELIM|PRELIMS|MAIN|MAINS|PAPER|PACKAGE|GENERAL|ONLY)\b/.test(key); }
+// Does a real ONLINE COURSE (not notes/test-series) exist for this exam (+subject)?
 function onlineHasFor(exam,subject){
   const oc=_cat.online||[];
   if(oc.length<200) return null; // unknown / incomplete fetch -> show online to be safe
   const key=subjKey(subject);
   let pool=oc.filter(c=>matchExam(c,exam) && !txtOf(c).includes("TEST SERIES"));
-  if(key) pool=pool.filter(c=>txtOf(c).includes(key));
+  if(!isGenericKey(key)) pool=pool.filter(c=>txtOf(c).includes(key));
   return pool.length>0;
 }
 function priceLine(c){
@@ -808,16 +810,16 @@ function matchCourses(pool,exam,subject,prod,medium){
   const pk=PRODKW[prod];
   if(pk) cand=cand.filter(c=>pk.some(k=>txtOf(c).includes(k)));
   const seen={}; cand=cand.filter(c=>{if(seen[c.id])return false;seen[c.id]=1;return true;});
-  const key=subjKey(subject);
-  let hits = key? cand.filter(c=>txtOf(c).includes(key)) : cand;
-  let exact=true;
-  if(key && hits.length===0){ hits=cand; exact=false; }
+  const key=subjKey(subject), generic=isGenericKey(key);
+  let hits, exact;
+  if(generic){ hits=cand; exact=true; }
+  else { hits=cand.filter(c=>txtOf(c).includes(key)); exact=hits.length>0; if(!exact) hits=[]; } // never show wrong-subject courses
   hits.sort((a,b)=>{
     const m=medScore(b,medium)-medScore(a,medium); if(m) return m;
     const fa=a.finalPrice!=null?a.finalPrice:a.price, fb=b.finalPrice!=null?b.finalPrice:b.price;
     return fa-fb;
   });
-  return {list:hits.slice(0,6), exact, total:hits.length};
+  return {list:hits.slice(0,6), exact, total:hits.length, generic};
 }
 function courseCard(c){
   return '<div class="row" style="padding:8px 0;border-bottom:1px solid #eee">'
@@ -831,7 +833,6 @@ function appsForProd(prod){
   if(prod==="enotes"||prod==="hardcopy") return ["notes"];
   return ["online","notes"];
 }
-// USP / top features to convince the student
 function uspBubble(prod){
   const online=(prod==="online"||prod==="combo");
   if(L==="hi"){
@@ -851,7 +852,7 @@ function browseBubble(apps,waMsg){
   return h;
 }
 
-// Q5 — only offer Online / Combo if an online course actually exists for this exam+subject
+// Q5 — only offer Online / Combo if a real online course exists for this exam+subject
 async function askQ5(){
   phase="product";setStep(5);
   await say(t("q5"),600);
@@ -898,19 +899,19 @@ async function doSuggest(prod){
   const res=matchCourses(cat,exam,subject,prod,medium);
 
   if(res.list.length){
-    const intro = res.exact
-      ? (L==="hi"?"✅ ये रहे आपके लिए सटीक मिलान वाले विकल्प — सीधे खोलकर देखें/खरीदें:":"✅ Here are the exact matches — open or buy directly:")
-      : (L==="hi"?"आपके इस विषय का सीधा मिलान नहीं मिला, पर "+examClean+" के ये विकल्प उपयोगी होंगे (या नीचे 'सभी कोर्स' में अपना विषय खोजें):":"No direct hit for that exact subject, but these "+examClean+" options are relevant (or search your subject under 'Browse all' below):");
+    const intro = res.generic
+      ? (L==="hi"?"✅ ये रहे "+examClean+" के लिए विकल्प — सीधे खोलकर देखें/खरीदें:":"✅ Here are the options for "+examClean+" — open or buy directly:")
+      : (L==="hi"?"✅ ये रहे आपके "+subjShort+" के सटीक विकल्प — सीधे खोलें/खरीदें:":"✅ Exact matches for "+subjShort+" — open or buy directly:");
     let html=intro+'<hr class="d">'+res.list.map(courseCard).join("");
     if(res.total>res.list.length) html+='<div style="font-size:11px;color:#666;margin-top:6px">'+(L==="hi"?"और भी विकल्प उपलब्ध हैं — नीचे 'सभी कोर्स' देखें।":"More options available — see 'Browse all' below.")+'</div>';
     addCTA(html);
     if(prod==="combo") addCTA('<div class="offer">'+t("offerBox")+'</div>');
+    addCTA(uspBubble(prod));
   } else {
     await say(L==="hi"
-      ?"इस संयोजन के लिए सीधा कोर्स अभी सूचीबद्ध नहीं दिखा — कृपया नीचे 'सभी कोर्स' खोलें या WhatsApp करें, हम सही कोर्स तुरंत बताएंगे।"
-      :"No direct course listed for this exact combination — please open 'Browse all' below or WhatsApp us and we'll point you to the right one right away.",700);
+      ?"फ़िलहाल <strong>"+subjShort+"</strong> ("+examClean+") के लिए इस फ़ॉर्मेट में अलग पैकेज सूचीबद्ध नहीं है। कृपया नीचे 'सभी कोर्स' में अपना विषय खोजें या WhatsApp करें — हम सही विकल्प तुरंत बता देंगे। 🙏"
+      :"We don't have a dedicated <strong>"+subjShort+"</strong> package for "+examClean+" in this format yet. Please search your subject under 'Browse all' below, or WhatsApp us — we'll confirm the right option right away. 🙏",700);
   }
-  addCTA(uspBubble(prod));
   addCTA(browseBubble(apps,waMsg));
   setTimeout(doMore,600);
 }
